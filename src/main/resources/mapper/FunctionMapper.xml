@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.byx.work.team.dao.FunctionDAO">
+    <resultMap type="com.byx.work.team.model.entity.Function" id="FunctionMap">
+        <id property="id" column="id" jdbcType="BIGINT" />
+        <result property="projectId" column="project_id" jdbcType="BIGINT" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="desc" column="desc" jdbcType="VARCHAR" />
+        <result property="devDeadline" column="dev_deadline" jdbcType="BIGINT" />
+        <result property="testDeadline" column="test_deadline" jdbcType="BIGINT" />
+        <result property="deadline" column="deadline" jdbcType="BIGINT" />
+        <result property="createdBy" column="created_by" jdbcType="BIGINT" />
+        <result property="createdDate" column="created_date" jdbcType="BIGINT" />
+        <result property="modifiedBy" column="modified_by" jdbcType="BIGINT" />
+        <result property="modifiedDate" column="modified_date" jdbcType="BIGINT" />
+        <result property="ip" column="ip" jdbcType="VARCHAR" />
+        <result property="status" column="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      `id`,
+            `project_id`,
+            `name`,
+            `desc`,
+            `dev_deadline`,
+            `test_deadline`,
+            `deadline`,
+            `created_by`,
+            `created_date`,
+            `modified_by`,
+            `modified_date`,
+            `ip`,
+            `status`
+    </sql>
+
+    <insert id="insert" parameterType="com.byx.work.team.model.entity.Function">
+        INSERT INTO t_function (
+            <include refid="Base_Column_List" />
+        )VALUES(
+            #{id},
+            #{projectId},
+            #{name},
+            #{desc},
+            #{devDeadline},
+            #{testDeadline},
+            #{deadline},
+            #{createdBy},
+            #{createdDate},
+            #{modifiedBy},
+            #{modifiedDate},
+            #{ip},
+            <choose>
+                <when test="status != null">#{status}</when>
+                <otherwise>1</otherwise>
+            </choose>
+        )
+    </insert>
+
+    <insert id="insertList" parameterType="List">
+        INSERT INTO t_function (
+            <include refid="Base_Column_List" />
+        )VALUES
+        <foreach collection="list" item="data" separator=",">
+        (
+            #{data.id},
+            #{data.projectId},
+            #{data.name},
+            #{data.desc},
+            #{data.devDeadline},
+            #{data.testDeadline},
+            #{data.deadline},
+            #{data.createdBy},
+            #{data.createdDate},
+            #{data.modifiedBy},
+            #{data.modifiedDate},
+            #{data.ip},
+            <choose>
+                <when test="data.status != null">#{data.status}</when>
+                <otherwise>1</otherwise>
+            </choose>
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.byx.work.team.model.entity.Function">
+        <![CDATA[
+            UPDATE t_function SET
+                `project_id`=#{projectId}, 
+                `name`=#{name}, 
+                `desc`=#{desc}, 
+                `dev_deadline`=#{devDeadline}, 
+                `test_deadline`=#{testDeadline}, 
+                `deadline`=#{deadline}, 
+                `ip`=#{ip}, 
+                `modified_by`=#{modifiedBy},
+                `modified_date`=#{modifiedDate}
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status != null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updatex" parameterType="Map">
+        <![CDATA[
+            UPDATE t_function SET
+        ]]>
+        <foreach collection="datas.keys" item="key" separator=","
+            open=" " close=" ">
+            <if test="key != null">
+                `${key}`= #{datas[${key}]}
+            </if>
+        </foreach>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <foreach collection="conditions.keys" item="key" separator=" AND "
+                open="AND">
+                <if test="key != null">
+                    `${key}`=#{conditions[${key}]}
+                </if>
+            </foreach>
+        </trim>
+    </update>
+
+    <update id="delete" parameterType="Map">
+        <![CDATA[
+            UPDATE t_function SET
+                `status`=0,
+                `modified_by`=#{modifiedBy},
+                `modified_date`=#{modifiedDate}
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </update>
+
+    <delete id="pdelete" parameterType="Map">
+        <![CDATA[
+            DELETE FROM t_function
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </delete>
+
+    <select id="count" parameterType="Map" resultType="Integer">
+        <![CDATA[
+            SELECT COUNT(*) FROM t_function
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="Map" resultMap="FunctionMap">
+        SELECT <include refid="Base_Column_List" /> FROM t_function
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        LIMIT 0,1
+    </select>
+
+    <select id="select" parameterType="Map" resultMap="FunctionMap">
+        SELECT <include refid="Base_Column_List" /> FROM t_function
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        <if test="scs != null and scs.size() > 0">
+            ORDER BY
+            <foreach collection="scs" item="sc" separator=",">
+                <![CDATA[
+                    ${sc.field} ${sc.order}
+                ]]>
+            </foreach>
+        </if>
+        <if test="pc != null">
+            LIMIT ${pc.startIndex},${pc.pageSize}
+        </if>
+    </select>
+    
+    <select id="selectMap" parameterType="Map" resultType="Map">
+        SELECT
+        <foreach collection="columns" item="cname" separator=","  open="`" close="`">
+            <![CDATA[
+                ${cname}
+            ]]>
+        </foreach>
+         FROM t_function
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        <if test="scs != null and scs.size() > 0">
+            ORDER BY
+            <foreach collection="scs" item="sc" separator=",">
+                <![CDATA[
+                    ${sc.field} ${sc.order}
+                ]]>
+            </foreach>
+        </if>
+        <if test="pc != null">
+            LIMIT ${pc.startIndex},${pc.pageSize}
+        </if>
+    </select>
+
+    <!--统计相关查询-->
+    <select id="groupCount" parameterType="Map" resultType="Map">
+        <![CDATA[
+            SELECT ${group} AS `group`, COUNT(DISTINCT id) AS `count` FROM  t_function 
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        GROUP BY `group` 
+        ORDER BY `group` ASC
+    </select>
+    
+    <select id="sum" parameterType="Map" resultType="Double">
+        <![CDATA[
+            SELECT IFNULL(SUM(${sumfield}),0) AS `sum` FROM  t_function  
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </select>
+    
+    <select id="groupSum" parameterType="Map" resultType="Map">
+        <![CDATA[
+            SELECT ${group} AS `group`, IFNULL(SUM(${sumfield}),0) AS `sum`  FROM  t_function  
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="projectId != null">
+                AND `project_id` = #{projectId}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="desc != null">
+                AND `desc` = #{desc}
+            </if>
+            <if test="devDeadline != null">
+                AND `dev_deadline` = #{devDeadline}
+            </if>
+            <if test="testDeadline != null">
+                AND `test_deadline` = #{testDeadline}
+            </if>
+            <if test="deadline != null">
+                AND `deadline` = #{deadline}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        GROUP BY `group` 
+        ORDER BY `group` ASC
+    </select>
+</mapper>
