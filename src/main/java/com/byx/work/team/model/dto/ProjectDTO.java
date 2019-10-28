@@ -46,5 +46,5 @@ public class ProjectDTO extends BaseDTO implements Serializable {
     @ApiModelProperty(value = "", name = "state")
     private String state;
 
-    private String completePercent;
+    private Integer completePercent;
 }

@@ -162,7 +162,7 @@ public class ProjectServiceImpl implements ProjectService {
             numberFormat.setMaximumFractionDigits(2);
             String result = count == 0 ? "0" : numberFormat.format((float) completeCount / (float) count * 100);
 
-            projectDTO.setCompletePercent(result);
+            projectDTO.setCompletePercent(Integer.valueOf(result));
             resultList.add(projectDTO);
         });
 
