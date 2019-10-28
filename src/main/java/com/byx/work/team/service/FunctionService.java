@@ -1,6 +1,6 @@
 package com.byx.work.team.service;
 
-import com.byx.work.team.exception.BizException;
+import com.byx.work.core.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
 import com.byx.framework.core.domain.PagingContext;

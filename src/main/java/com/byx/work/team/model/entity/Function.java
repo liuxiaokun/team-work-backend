@@ -1,6 +1,6 @@
 package com.byx.work.team.model.entity;
 
-import com.byx.work.team.model.entity.BaseEntity;
+import com.byx.work.core.model.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -21,12 +21,12 @@ import java.math.BigDecimal;
 public class Function extends BaseEntity implements Serializable {
 
     /**
-     * 
+     * 归属项目
      */
     private Long projectId;
 
     /**
-     * 
+     * 需求名称
      */
     private String name;
 
@@ -36,7 +36,17 @@ public class Function extends BaseEntity implements Serializable {
     private String desc;
 
     /**
+     * 当前任务状态
+     */
+    private Long currentStateId;
+
+    /**
      * 
+     */
+    private String currentStateName;
+
+    /**
+     * 开发开始时间
      */
     private Long devStartTime;
 

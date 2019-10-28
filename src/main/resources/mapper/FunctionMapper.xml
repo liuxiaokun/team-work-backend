@@ -9,6 +9,8 @@
         <result property="projectId" column="project_id" jdbcType="BIGINT" />
         <result property="name" column="name" jdbcType="VARCHAR" />
         <result property="desc" column="desc" jdbcType="VARCHAR" />
+        <result property="currentStateId" column="current_state_id" jdbcType="BIGINT" />
+        <result property="currentStateName" column="current_state_name" jdbcType="VARCHAR" />
         <result property="devStartTime" column="dev_start_time" jdbcType="BIGINT" />
         <result property="devDeadline" column="dev_deadline" jdbcType="BIGINT" />
         <result property="testDeadline" column="test_deadline" jdbcType="BIGINT" />
@@ -26,6 +28,8 @@
             `project_id`,
             `name`,
             `desc`,
+            `current_state_id`,
+            `current_state_name`,
             `dev_start_time`,
             `dev_deadline`,
             `test_deadline`,
@@ -46,6 +50,8 @@
             #{projectId},
             #{name},
             #{desc},
+            #{currentStateId},
+            #{currentStateName},
             #{devStartTime},
             #{devDeadline},
             #{testDeadline},
@@ -72,6 +78,8 @@
             #{data.projectId},
             #{data.name},
             #{data.desc},
+            #{data.currentStateId},
+            #{data.currentStateName},
             #{data.devStartTime},
             #{data.devDeadline},
             #{data.testDeadline},
@@ -95,6 +103,8 @@
                 `project_id`=#{projectId}, 
                 `name`=#{name}, 
                 `desc`=#{desc}, 
+                `current_state_id`=#{currentStateId}, 
+                `current_state_name`=#{currentStateName}, 
                 `dev_start_time`=#{devStartTime}, 
                 `dev_deadline`=#{devDeadline}, 
                 `test_deadline`=#{testDeadline}, 
@@ -162,6 +172,12 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
+            </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
@@ -206,6 +222,12 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
             </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
@@ -252,6 +274,12 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
+            </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
@@ -294,6 +322,12 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
             </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
@@ -338,6 +372,12 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
             </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
@@ -399,6 +439,12 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
+            </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
@@ -456,6 +502,12 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
+            </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
@@ -503,6 +555,12 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
+            </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
@@ -547,6 +605,12 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="currentStateId != null">
+                AND `current_state_id` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `current_state_name` = #{currentStateName}
             </if>
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}

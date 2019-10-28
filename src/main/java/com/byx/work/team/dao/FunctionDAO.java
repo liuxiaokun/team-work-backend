@@ -1,7 +1,7 @@
 package com.byx.work.team.dao;
 
 import com.byx.work.team.model.entity.Function;
-import com.byx.work.team.dao.BaseDAO;
+import com.byx.work.core.dao.BaseDAO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

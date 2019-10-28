@@ -1,6 +1,6 @@
 package com.byx.work.team.model.dto;
 
-import com.byx.work.team.model.dto.BaseDTO;
+import com.byx.work.core.model.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,16 +21,22 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FunctionDTO extends BaseDTO implements Serializable {
 
-    @ApiModelProperty(value = "", name = "projectId")
+    @ApiModelProperty(value = "归属项目", name = "projectId")
     private Long projectId;
 
-    @ApiModelProperty(value = "", name = "name")
+    @ApiModelProperty(value = "需求名称", name = "name")
     private String name;
 
     @ApiModelProperty(value = "详细描述", name = "desc")
     private String desc;
 
-    @ApiModelProperty(value = "", name = "devStartTime")
+    @ApiModelProperty(value = "当前任务状态", name = "currentStateId")
+    private Long currentStateId;
+
+    @ApiModelProperty(value = "", name = "currentStateName")
+    private String currentStateName;
+
+    @ApiModelProperty(value = "开发开始时间", name = "devStartTime")
     private Long devStartTime;
 
     @ApiModelProperty(value = "开发完成时间", name = "devDeadline")
