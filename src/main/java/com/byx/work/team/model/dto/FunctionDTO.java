@@ -1,6 +1,6 @@
 package com.byx.work.team.model.dto;
 
-import com.byx.work.core.model.dto.BaseDTO;
+import com.byx.work.team.model.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

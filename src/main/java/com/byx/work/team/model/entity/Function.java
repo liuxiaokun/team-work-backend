@@ -1,6 +1,6 @@
 package com.byx.work.team.model.entity;
 
-import com.byx.work.core.model.entity.BaseEntity;
+import com.byx.work.team.model.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

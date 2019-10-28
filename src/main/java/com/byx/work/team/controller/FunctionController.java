@@ -1,11 +1,11 @@
 package com.byx.work.team.controller;
 
-import com.byx.work.core.controller.BaseController;
-import com.byx.work.core.exception.BizException;
+import com.byx.work.team.controller.BaseController;
+import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
 import com.byx.work.team.service.FunctionService;
-import com.byx.work.core.utils.BeanUtil;
+import com.byx.work.team.utils.BeanUtil;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
 import com.byx.framework.core.web.RO;
