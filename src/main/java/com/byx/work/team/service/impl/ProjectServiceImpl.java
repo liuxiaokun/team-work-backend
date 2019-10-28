@@ -1,5 +1,6 @@
 package com.byx.work.team.service.impl;
 
+import com.byx.work.team.dao.FunctionDAO;
 import com.byx.work.team.dao.ProjectDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.ProjectDTO;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,10 +31,12 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectDAO projectDAO;
+    private final FunctionDAO functionDAO;
 
     @Autowired
-    public ProjectServiceImpl(ProjectDAO projectDAO) {
+    public ProjectServiceImpl(ProjectDAO projectDAO, FunctionDAO functionDAO) {
         this.projectDAO = projectDAO;
+        this.functionDAO = functionDAO;
     }
 
     @Override
@@ -131,11 +136,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> find(Map<String, Object> params,
-        Vector<SortingContext> scs, PagingContext pc) {
+                                 Vector<SortingContext> scs, PagingContext pc) {
 
         if (params.size() > 0) {
             params = params.entrySet().stream().filter(entry ->
-                (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
+                    (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
         params.put("pc", pc);
@@ -145,6 +150,19 @@ public class ProjectServiceImpl implements ProjectService {
         projectList.forEach(tem -> {
             ProjectDTO projectDTO = new ProjectDTO();
             BeanUtils.copyProperties(tem, projectDTO);
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("projectId", tem.getId());
+            int count = functionDAO.count(condition);
+
+            condition.put("currentStateId", 444);
+            int completeCount = functionDAO.count(condition);
+
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            // 设置精确到小数点后2位
+            numberFormat.setMaximumFractionDigits(2);
+            String result = count == 0 ? "0" : numberFormat.format((float) completeCount / (float) count * 100);
+
+            projectDTO.setCompletePercent(result);
             resultList.add(projectDTO);
         });
 
@@ -153,7 +171,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Map> findMap(Map<String, Object> params, Vector<SortingContext> scs,
-                          PagingContext pc, String... columns) throws BizException {
+                             PagingContext pc, String... columns) throws BizException {
         if (columns.length == 0) {
             throw new BizException("columns长度不能为0");
         }
