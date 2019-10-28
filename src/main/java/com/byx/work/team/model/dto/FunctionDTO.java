@@ -1,16 +1,20 @@
 package com.byx.work.team.model.dto;
 
+import com.byx.work.team.model.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.sql.Time;
+import java.math.BigDecimal;
 
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/25
+ * @since 2019/10/28
  */
 @ApiModel("Function")
 @Data
@@ -25,6 +29,9 @@ public class FunctionDTO extends BaseDTO implements Serializable {
 
     @ApiModelProperty(value = "详细描述", name = "desc")
     private String desc;
+
+    @ApiModelProperty(value = "", name = "devStartTime")
+    private Long devStartTime;
 
     @ApiModelProperty(value = "开发完成时间", name = "devDeadline")
     private Long devDeadline;

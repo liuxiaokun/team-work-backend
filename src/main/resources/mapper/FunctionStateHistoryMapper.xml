@@ -8,6 +8,7 @@
         <id property="id" column="id" jdbcType="BIGINT" />
         <result property="functionId" column="function_id" jdbcType="BIGINT" />
         <result property="functionStateId" column="function_state_id" jdbcType="BIGINT" />
+        <result property="assigner" column="assigner" jdbcType="BIGINT" />
         <result property="createdDate" column="created_date" jdbcType="BIGINT" />
         <result property="createdBy" column="created_by" jdbcType="BIGINT" />
         <result property="modifiedDate" column="modified_date" jdbcType="BIGINT" />
@@ -20,6 +21,7 @@
       `id`,
             `function_id`,
             `function_state_id`,
+            `assigner`,
             `created_date`,
             `created_by`,
             `modified_date`,
@@ -35,6 +37,7 @@
             #{id},
             #{functionId},
             #{functionStateId},
+            #{assigner},
             #{createdDate},
             #{createdBy},
             #{modifiedDate},
@@ -56,6 +59,7 @@
             #{data.id},
             #{data.functionId},
             #{data.functionStateId},
+            #{data.assigner},
             #{data.createdDate},
             #{data.createdBy},
             #{data.modifiedDate},
@@ -74,6 +78,7 @@
             UPDATE t_function_state_history SET
                 `function_id`=#{functionId}, 
                 `function_state_id`=#{functionStateId}, 
+                `assigner`=#{assigner}, 
                 `ip`=#{ip}, 
                 `modified_by`=#{modifiedBy},
                 `modified_date`=#{modifiedDate}
@@ -134,6 +139,9 @@
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
             </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
+            </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
             </if>
@@ -163,6 +171,9 @@
             </if>
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
+            </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
             </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
@@ -194,6 +205,9 @@
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
             </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
+            </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
             </if>
@@ -221,6 +235,9 @@
             </if>
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
+            </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
             </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
@@ -250,6 +267,9 @@
             </if>
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
+            </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
             </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
@@ -296,6 +316,9 @@
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
             </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
+            </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
             </if>
@@ -338,6 +361,9 @@
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
             </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
+            </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
             </if>
@@ -370,6 +396,9 @@
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
             </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
+            </if>
             <if test="ip != null">
                 AND `ip` = #{ip}
             </if>
@@ -399,6 +428,9 @@
             </if>
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
+            </if>
+            <if test="assigner != null">
+                AND `assigner` = #{assigner}
             </if>
             <if test="ip != null">
                 AND `ip` = #{ip}

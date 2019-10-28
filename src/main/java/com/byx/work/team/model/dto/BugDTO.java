@@ -1,16 +1,20 @@
 package com.byx.work.team.model.dto;
 
+import com.byx.work.team.model.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.sql.Time;
+import java.math.BigDecimal;
 
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/25
+ * @since 2019/10/28
  */
 @ApiModel("Bug")
 @Data
@@ -29,12 +33,15 @@ public class BugDTO extends BaseDTO implements Serializable {
     @ApiModelProperty(value = "", name = "desc")
     private String desc;
 
-    @ApiModelProperty(value = "", name = "fixDeadline")
+    @ApiModelProperty(value = "开始修复时间", name = "fixStartTime")
+    private Long fixStartTime;
+
+    @ApiModelProperty(value = "修复结束时间", name = "fixDeadline")
     private Long fixDeadline;
 
     @ApiModelProperty(value = "", name = "testDeadline")
     private Long testDeadline;
 
-    @ApiModelProperty(value = "截止日期", name = "deadline")
+    @ApiModelProperty(value = "修复上线日期", name = "deadline")
     private Long deadline;
 }

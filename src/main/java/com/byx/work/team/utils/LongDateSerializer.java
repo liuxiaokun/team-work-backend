@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/25
+ * @since 2019/10/28
  */
 public class LongDateSerializer extends JsonSerializer<Long> {
 

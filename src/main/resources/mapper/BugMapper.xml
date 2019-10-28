@@ -10,6 +10,7 @@
         <result property="owner" column="owner" jdbcType="BIGINT" />
         <result property="title" column="title" jdbcType="VARCHAR" />
         <result property="desc" column="desc" jdbcType="VARCHAR" />
+        <result property="fixStartTime" column="fix_start_time" jdbcType="BIGINT" />
         <result property="fixDeadline" column="fix_deadline" jdbcType="BIGINT" />
         <result property="testDeadline" column="test_deadline" jdbcType="BIGINT" />
         <result property="deadline" column="deadline" jdbcType="BIGINT" />
@@ -27,6 +28,7 @@
             `owner`,
             `title`,
             `desc`,
+            `fix_start_time`,
             `fix_deadline`,
             `test_deadline`,
             `deadline`,
@@ -47,6 +49,7 @@
             #{owner},
             #{title},
             #{desc},
+            #{fixStartTime},
             #{fixDeadline},
             #{testDeadline},
             #{deadline},
@@ -73,6 +76,7 @@
             #{data.owner},
             #{data.title},
             #{data.desc},
+            #{data.fixStartTime},
             #{data.fixDeadline},
             #{data.testDeadline},
             #{data.deadline},
@@ -96,6 +100,7 @@
                 `owner`=#{owner}, 
                 `title`=#{title}, 
                 `desc`=#{desc}, 
+                `fix_start_time`=#{fixStartTime}, 
                 `fix_deadline`=#{fixDeadline}, 
                 `test_deadline`=#{testDeadline}, 
                 `deadline`=#{deadline}, 
@@ -165,6 +170,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
+            </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
             </if>
@@ -209,6 +217,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
             </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
@@ -255,6 +266,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
+            </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
             </if>
@@ -297,6 +311,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
             </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
@@ -341,6 +358,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
             </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
@@ -402,6 +422,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
+            </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
             </if>
@@ -459,6 +482,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
+            </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
             </if>
@@ -506,6 +532,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
+            </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}
             </if>
@@ -550,6 +579,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="fixStartTime != null">
+                AND `fix_start_time` = #{fixStartTime}
             </if>
             <if test="fixDeadline != null">
                 AND `fix_deadline` = #{fixDeadline}

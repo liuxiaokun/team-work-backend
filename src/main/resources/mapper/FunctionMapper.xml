@@ -9,6 +9,7 @@
         <result property="projectId" column="project_id" jdbcType="BIGINT" />
         <result property="name" column="name" jdbcType="VARCHAR" />
         <result property="desc" column="desc" jdbcType="VARCHAR" />
+        <result property="devStartTime" column="dev_start_time" jdbcType="BIGINT" />
         <result property="devDeadline" column="dev_deadline" jdbcType="BIGINT" />
         <result property="testDeadline" column="test_deadline" jdbcType="BIGINT" />
         <result property="deadline" column="deadline" jdbcType="BIGINT" />
@@ -25,6 +26,7 @@
             `project_id`,
             `name`,
             `desc`,
+            `dev_start_time`,
             `dev_deadline`,
             `test_deadline`,
             `deadline`,
@@ -44,6 +46,7 @@
             #{projectId},
             #{name},
             #{desc},
+            #{devStartTime},
             #{devDeadline},
             #{testDeadline},
             #{deadline},
@@ -69,6 +72,7 @@
             #{data.projectId},
             #{data.name},
             #{data.desc},
+            #{data.devStartTime},
             #{data.devDeadline},
             #{data.testDeadline},
             #{data.deadline},
@@ -91,6 +95,7 @@
                 `project_id`=#{projectId}, 
                 `name`=#{name}, 
                 `desc`=#{desc}, 
+                `dev_start_time`=#{devStartTime}, 
                 `dev_deadline`=#{devDeadline}, 
                 `test_deadline`=#{testDeadline}, 
                 `deadline`=#{deadline}, 
@@ -157,6 +162,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
+            </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
             </if>
@@ -198,6 +206,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
             </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
@@ -241,6 +252,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
+            </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
             </if>
@@ -280,6 +294,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
             </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
@@ -321,6 +338,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
             </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
@@ -379,6 +399,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
+            </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
             </if>
@@ -433,6 +456,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
+            </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
             </if>
@@ -477,6 +503,9 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
+            </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}
             </if>
@@ -518,6 +547,9 @@
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
+            </if>
+            <if test="devStartTime != null">
+                AND `dev_start_time` = #{devStartTime}
             </if>
             <if test="devDeadline != null">
                 AND `dev_deadline` = #{devDeadline}

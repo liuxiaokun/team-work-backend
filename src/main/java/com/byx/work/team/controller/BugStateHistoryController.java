@@ -1,5 +1,6 @@
 package com.byx.work.team.controller;
 
+import com.byx.work.team.controller.BaseController;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.BugStateHistoryDTO;
 import com.byx.work.team.model.entity.BugStateHistory;
@@ -22,7 +23,7 @@ import java.util.*;
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/25
+ * @since 2019/10/28
  */
 @RestController
 @RequestMapping(value = "/bug/state/history", name = "BugStateHistory")
