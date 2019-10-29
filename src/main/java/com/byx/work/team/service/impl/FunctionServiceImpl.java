@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -134,11 +136,11 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public List<FunctionDTO> find(Map<String, Object> params,
-        Vector<SortingContext> scs, PagingContext pc) {
+                                  Vector<SortingContext> scs, PagingContext pc) {
 
         if (params.size() > 0) {
             params = params.entrySet().stream().filter(entry ->
-                (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
+                    (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
         params.put("pc", pc);
@@ -151,6 +153,22 @@ public class FunctionServiceImpl implements FunctionService {
             Map<String, Object> projectParam = new HashMap<>();
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
+
+            Long deadline = functionDTO.getDeadline();
+            Long devStartTime = functionDTO.getDevStartTime();
+            long now = System.currentTimeMillis();
+            int result = 0;
+            if(now > deadline ) {
+                result = 100;
+            } else if(now > devStartTime) {
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                numberFormat.setMaximumFractionDigits(2);
+
+                BigDecimal usedTime = new BigDecimal(now - devStartTime);
+                BigDecimal allTime = new BigDecimal(deadline - devStartTime);
+                result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
+            }
+            functionDTO.setTimeCostPercent(result);
             resultList.add(functionDTO);
         });
 
@@ -159,7 +177,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public List<Map> findMap(Map<String, Object> params, Vector<SortingContext> scs,
-                          PagingContext pc, String... columns) throws BizException {
+                             PagingContext pc, String... columns) throws BizException {
         if (columns.length == 0) {
             throw new BizException("columns长度不能为0");
         }

@@ -57,5 +57,6 @@ public class FunctionDTO extends BaseDTO implements Serializable {
     @JsonSerialize(using = LongDateSerializer.class)
     private Long deadline;
 
-    private Integer completePercent = 77;
+    private Integer completePercent;
+    private Integer timeCostPercent;
 }
