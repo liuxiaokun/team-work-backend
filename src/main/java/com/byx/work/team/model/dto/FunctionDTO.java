@@ -1,7 +1,9 @@
 package com.byx.work.team.model.dto;
 
+import com.byx.work.team.config.LongDateSerializer;
 import com.byx.work.team.model.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -37,14 +39,20 @@ public class FunctionDTO extends BaseDTO implements Serializable {
     private String currentStateName;
 
     @ApiModelProperty(value = "开发开始时间", name = "devStartTime")
+    @JsonSerialize(using = LongDateSerializer.class)
     private Long devStartTime;
 
     @ApiModelProperty(value = "开发完成时间", name = "devDeadline")
+    @JsonSerialize(using = LongDateSerializer.class)
     private Long devDeadline;
 
     @ApiModelProperty(value = "测试完成时间", name = "testDeadline")
+    @JsonSerialize(using = LongDateSerializer.class)
     private Long testDeadline;
 
     @ApiModelProperty(value = "功能完成时间", name = "deadline")
+    @JsonSerialize(using = LongDateSerializer.class)
     private Long deadline;
+
+    private Integer completePercent = 77;
 }
