@@ -1,6 +1,7 @@
 package com.byx.work.team.service.impl;
 
 import com.byx.work.team.dao.FunctionDAO;
+import com.byx.work.team.dao.ProjectDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
@@ -28,10 +29,12 @@ import java.util.stream.Collectors;
 public class FunctionServiceImpl implements FunctionService {
 
     private final FunctionDAO functionDAO;
+    private final ProjectDAO projectDAO;
 
     @Autowired
-    public FunctionServiceImpl(FunctionDAO functionDAO) {
+    public FunctionServiceImpl(FunctionDAO functionDAO, ProjectDAO projectDAO) {
         this.functionDAO = functionDAO;
+        this.projectDAO = projectDAO;
     }
 
     @Override
@@ -145,6 +148,9 @@ public class FunctionServiceImpl implements FunctionService {
         functionList.forEach(tem -> {
             FunctionDTO functionDTO = new FunctionDTO();
             BeanUtils.copyProperties(tem, functionDTO);
+            Map<String, Object> projectParam = new HashMap<>();
+            projectParam.put("id", functionDTO.getProjectId());
+            functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
             resultList.add(functionDTO);
         });
 
