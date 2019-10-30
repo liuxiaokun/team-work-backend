@@ -115,6 +115,9 @@ public class FunctionServiceImpl implements FunctionService {
 
         if (null != function) {
             BeanUtils.copyProperties(function, functionDTO);
+            Map<String, Object> projectParam = new HashMap<>(1);
+            projectParam.put("id", functionDTO.getProjectId());
+            functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
         }
         return functionDTO;
     }
@@ -130,6 +133,9 @@ public class FunctionServiceImpl implements FunctionService {
         FunctionDTO functionDTO = new FunctionDTO();
         if (null != function) {
             BeanUtils.copyProperties(function, functionDTO);
+            Map<String, Object> projectParam = new HashMap<>(1);
+            projectParam.put("id", functionDTO.getProjectId());
+            functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
         }
         return functionDTO;
     }
@@ -150,7 +156,7 @@ public class FunctionServiceImpl implements FunctionService {
         functionList.forEach(tem -> {
             FunctionDTO functionDTO = new FunctionDTO();
             BeanUtils.copyProperties(tem, functionDTO);
-            Map<String, Object> projectParam = new HashMap<>();
+            Map<String, Object> projectParam = new HashMap<>(1);
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
 

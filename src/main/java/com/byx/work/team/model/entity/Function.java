@@ -51,14 +51,14 @@ public class Function extends BaseEntity implements Serializable {
     private Long devStartTime;
 
     /**
-     * 开发完成时间
+     * 测试开始时间
      */
-    private Long devDeadline;
+    private Long testStartTime;
 
     /**
-     * 测试完成时间
+     * 发布开发时间
      */
-    private Long testDeadline;
+    private Long deployStartTime;
 
     /**
      * 功能完成时间
