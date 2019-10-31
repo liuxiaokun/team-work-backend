@@ -1,8 +1,8 @@
 package com.byx.work.team.service;
 
 import com.byx.work.team.exception.BizException;
-import com.byx.work.team.model.dto.RolesDTO;
-import com.byx.work.team.model.entity.Roles;
+import com.byx.work.team.model.dto.RoleDTO;
+import com.byx.work.team.model.entity.Role;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
 
@@ -23,7 +23,7 @@ public interface RolesService {
      * @param roles 待保存的数据。
      * @throws BizException 保存失败异常。
      */
-    void saveRoles(Roles roles) throws BizException;
+    void saveRoles(Role roles) throws BizException;
 
     /**
      * 保存多条 Roles 数据。
@@ -31,14 +31,14 @@ public interface RolesService {
      * @param rolesList 待保存的数据列表。
      * @throws BizException 保存失败异常。
      */
-    void saveRolesList(List<Roles> rolesList) throws BizException;
+    void saveRolesList(List<Role> rolesList) throws BizException;
 
     /**
      * 根据id更新 Roles，字段为null的选项会把数据库字段更新为null，即全部更新。
      *
      * @param roles 更新的目标数据。
      */
-    void updateRoles(Roles roles);
+    void updateRoles(Role roles);
 
     /**
      * 根据Id部分更新实体 Roles。
@@ -71,7 +71,7 @@ public interface RolesService {
      * @param id 数据唯一id。
      * @return 查询到的 Roles 数据。
      */
-    RolesDTO findRolesById(Long id);
+    RoleDTO findRolesById(Long id);
 
     /**
      * 根据条件查询得到第一条 Roles。
@@ -79,7 +79,7 @@ public interface RolesService {
      * @param params 查询条件
      * @return 符合条件的一个 Roles。
      */
-    RolesDTO findOneRoles(Map<String, Object> params);
+    RoleDTO findOneRoles(Map<String, Object> params);
 
     /**
      * 根据查询条件得到数据列表，包含分页和排序信息。
@@ -89,7 +89,7 @@ public interface RolesService {
      * @param pc 分页信息。
      * @return 查询结果的数据集合。
      */
-    List<RolesDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
+    List<RoleDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
 
     /**
      * 根据查询条件得到指定字段集合的数据列表，包含分页和排序信息。

@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.byx.work.team.dao.UserDAO">
+    <resultMap type="com.byx.work.team.model.entity.User" id="UserMap">
+        <id property="id" column="id" jdbcType="BIGINT" />
+        <result property="mobile" column="mobile" jdbcType="VARCHAR" />
+        <result property="password" column="password" jdbcType="VARCHAR" />
+        <result property="salt" column="salt" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="serialNumber" column="serial_number" jdbcType="VARCHAR" />
+        <result property="nickname" column="nickname" jdbcType="VARCHAR" />
+        <result property="position" column="position" jdbcType="VARCHAR" />
+        <result property="email" column="email" jdbcType="VARCHAR" />
+        <result property="state" column="state" jdbcType="VARCHAR" />
+        <result property="createdBy" column="created_by" jdbcType="BIGINT" />
+        <result property="createdDate" column="created_date" jdbcType="BIGINT" />
+        <result property="modifiedBy" column="modified_by" jdbcType="BIGINT" />
+        <result property="modifiedDate" column="modified_date" jdbcType="BIGINT" />
+        <result property="ip" column="ip" jdbcType="VARCHAR" />
+        <result property="status" column="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      `id`,
+            `mobile`,
+            `password`,
+            `salt`,
+            `name`,
+            `serial_number`,
+            `nickname`,
+            `position`,
+            `email`,
+            `state`,
+            `created_by`,
+            `created_date`,
+            `modified_by`,
+            `modified_date`,
+            `ip`,
+            `status`
+    </sql>
+
+    <insert id="insert" parameterType="com.byx.work.team.model.entity.User">
+        INSERT INTO t_user (
+            <include refid="Base_Column_List" />
+        )VALUES(
+            #{id},
+            #{mobile},
+            #{password},
+            #{salt},
+            #{name},
+            #{serialNumber},
+            #{nickname},
+            #{position},
+            #{email},
+            #{state},
+            #{createdBy},
+            #{createdDate},
+            #{modifiedBy},
+            #{modifiedDate},
+            #{ip},
+            <choose>
+                <when test="status != null">#{status}</when>
+                <otherwise>1</otherwise>
+            </choose>
+        )
+    </insert>
+
+    <insert id="insertList" parameterType="List">
+        INSERT INTO t_user (
+            <include refid="Base_Column_List" />
+        )VALUES
+        <foreach collection="list" item="data" separator=",">
+        (
+            #{data.id},
+            #{data.mobile},
+            #{data.password},
+            #{data.salt},
+            #{data.name},
+            #{data.serialNumber},
+            #{data.nickname},
+            #{data.position},
+            #{data.email},
+            #{data.state},
+            #{data.createdBy},
+            #{data.createdDate},
+            #{data.modifiedBy},
+            #{data.modifiedDate},
+            #{data.ip},
+            <choose>
+                <when test="data.status != null">#{data.status}</when>
+                <otherwise>1</otherwise>
+            </choose>
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.byx.work.team.model.entity.User">
+        <![CDATA[
+            UPDATE t_user SET
+                `mobile`=#{mobile}, 
+                `password`=#{password}, 
+                `salt`=#{salt}, 
+                `name`=#{name}, 
+                `serial_number`=#{serialNumber}, 
+                `nickname`=#{nickname}, 
+                `position`=#{position}, 
+                `email`=#{email}, 
+                `state`=#{state}, 
+                `ip`=#{ip}, 
+                `modified_by`=#{modifiedBy},
+                `modified_date`=#{modifiedDate}
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status != null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updatex" parameterType="Map">
+        <![CDATA[
+            UPDATE t_user SET
+        ]]>
+        <foreach collection="datas.keys" item="key" separator=","
+            open=" " close=" ">
+            <if test="key != null">
+                `${key}`= #{datas[${key}]}
+            </if>
+        </foreach>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <foreach collection="conditions.keys" item="key" separator=" AND "
+                open="AND">
+                <if test="key != null">
+                    `${key}`=#{conditions[${key}]}
+                </if>
+            </foreach>
+        </trim>
+    </update>
+
+    <update id="delete" parameterType="Map">
+        <![CDATA[
+            UPDATE t_user SET
+                `status`=0,
+                `modified_by`=#{modifiedBy},
+                `modified_date`=#{modifiedDate}
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </update>
+
+    <delete id="pdelete" parameterType="Map">
+        <![CDATA[
+            DELETE FROM t_user
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </delete>
+
+    <select id="count" parameterType="Map" resultType="Integer">
+        <![CDATA[
+            SELECT COUNT(*) FROM t_user
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="Map" resultMap="UserMap">
+        SELECT <include refid="Base_Column_List" /> FROM t_user
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        LIMIT 0,1
+    </select>
+
+    <select id="select" parameterType="Map" resultMap="UserMap">
+        SELECT <include refid="Base_Column_List" /> FROM t_user
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        <if test="scs != null and scs.size() > 0">
+            ORDER BY
+            <foreach collection="scs" item="sc" separator=",">
+                <![CDATA[
+                    ${sc.field} ${sc.order}
+                ]]>
+            </foreach>
+        </if>
+        <if test="pc != null">
+            LIMIT ${pc.startIndex},${pc.pageSize}
+        </if>
+    </select>
+    
+    <select id="selectMap" parameterType="Map" resultType="Map">
+        SELECT
+        <foreach collection="columns" item="cname" separator=","  open="`" close="`">
+            <![CDATA[
+                ${cname}
+            ]]>
+        </foreach>
+         FROM t_user
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        <if test="scs != null and scs.size() > 0">
+            ORDER BY
+            <foreach collection="scs" item="sc" separator=",">
+                <![CDATA[
+                    ${sc.field} ${sc.order}
+                ]]>
+            </foreach>
+        </if>
+        <if test="pc != null">
+            LIMIT ${pc.startIndex},${pc.pageSize}
+        </if>
+    </select>
+
+    <!--统计相关查询-->
+    <select id="groupCount" parameterType="Map" resultType="Map">
+        <![CDATA[
+            SELECT ${group} AS `group`, COUNT(DISTINCT id) AS `count` FROM  t_user 
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        GROUP BY `group` 
+        ORDER BY `group` ASC
+    </select>
+    
+    <select id="sum" parameterType="Map" resultType="Double">
+        <![CDATA[
+            SELECT IFNULL(SUM(${sumfield}),0) AS `sum` FROM  t_user  
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+    </select>
+    
+    <select id="groupSum" parameterType="Map" resultType="Map">
+        <![CDATA[
+            SELECT ${group} AS `group`, IFNULL(SUM(${sumfield}),0) AS `sum`  FROM  t_user  
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <choose>
+                <when test="status !=null ">status = #{status}</when>
+                <otherwise><![CDATA[status > 0]]></otherwise>
+            </choose>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mobile != null">
+                AND `mobile` = #{mobile}
+            </if>
+            <if test="password != null">
+                AND `password` = #{password}
+            </if>
+            <if test="salt != null">
+                AND `salt` = #{salt}
+            </if>
+            <if test="name != null">
+                AND `name` = #{name}
+            </if>
+            <if test="serialNumber != null">
+                AND `serial_number` = #{serialNumber}
+            </if>
+            <if test="nickname != null">
+                AND `nickname` = #{nickname}
+            </if>
+            <if test="position != null">
+                AND `position` = #{position}
+            </if>
+            <if test="email != null">
+                AND `email` = #{email}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="ip != null">
+                AND `ip` = #{ip}
+            </if>
+            <if test="start != null  and  end != null">
+                AND `created_date` BETWEEN  #{start} AND #{end}
+            </if>
+            <if test="date != null">
+                AND `created_date` LIKE CONCAT(#{date},'%')
+            </if>
+        </trim>
+        GROUP BY `group` 
+        ORDER BY `group` ASC
+    </select>
+</mapper>

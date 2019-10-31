@@ -1,8 +1,8 @@
 package com.byx.work.team.service;
 
 import com.byx.work.team.exception.BizException;
-import com.byx.work.team.model.dto.UserRolesDTO;
-import com.byx.work.team.model.entity.UserRoles;
+import com.byx.work.team.model.dto.UserRoleDTO;
+import com.byx.work.team.model.entity.UserRole;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
 
@@ -23,7 +23,7 @@ public interface UserRolesService {
      * @param userRoles 待保存的数据。
      * @throws BizException 保存失败异常。
      */
-    void saveUserRoles(UserRoles userRoles) throws BizException;
+    void saveUserRoles(UserRole userRoles) throws BizException;
 
     /**
      * 保存多条 UserRoles 数据。
@@ -31,14 +31,14 @@ public interface UserRolesService {
      * @param userRolesList 待保存的数据列表。
      * @throws BizException 保存失败异常。
      */
-    void saveUserRolesList(List<UserRoles> userRolesList) throws BizException;
+    void saveUserRolesList(List<UserRole> userRolesList) throws BizException;
 
     /**
      * 根据id更新 UserRoles，字段为null的选项会把数据库字段更新为null，即全部更新。
      *
      * @param userRoles 更新的目标数据。
      */
-    void updateUserRoles(UserRoles userRoles);
+    void updateUserRoles(UserRole userRoles);
 
     /**
      * 根据Id部分更新实体 UserRoles。
@@ -71,7 +71,7 @@ public interface UserRolesService {
      * @param id 数据唯一id。
      * @return 查询到的 UserRoles 数据。
      */
-    UserRolesDTO findUserRolesById(Long id);
+    UserRoleDTO findUserRolesById(Long id);
 
     /**
      * 根据条件查询得到第一条 UserRoles。
@@ -79,7 +79,7 @@ public interface UserRolesService {
      * @param params 查询条件
      * @return 符合条件的一个 UserRoles。
      */
-    UserRolesDTO findOneUserRoles(Map<String, Object> params);
+    UserRoleDTO findOneUserRoles(Map<String, Object> params);
 
     /**
      * 根据查询条件得到数据列表，包含分页和排序信息。
@@ -89,7 +89,7 @@ public interface UserRolesService {
      * @param pc 分页信息。
      * @return 查询结果的数据集合。
      */
-    List<UserRolesDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
+    List<UserRoleDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
 
     /**
      * 根据查询条件得到指定字段集合的数据列表，包含分页和排序信息。

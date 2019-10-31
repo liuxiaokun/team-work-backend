@@ -1,10 +1,14 @@
 package com.byx.work.team.service.impl;
 
 import com.byx.work.team.dao.FunctionDAO;
+import com.byx.work.team.dao.FunctionStateHistoryDAO;
 import com.byx.work.team.dao.ProjectDAO;
+import com.byx.work.team.dao.UserDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
+import com.byx.work.team.model.entity.FunctionStateHistory;
+import com.byx.work.team.model.entity.User;
 import com.byx.work.team.service.FunctionService;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
@@ -32,11 +36,16 @@ public class FunctionServiceImpl implements FunctionService {
 
     private final FunctionDAO functionDAO;
     private final ProjectDAO projectDAO;
+    private final FunctionStateHistoryDAO functionStateHistoryDAO;
+    private final UserDAO userDAO;
 
     @Autowired
-    public FunctionServiceImpl(FunctionDAO functionDAO, ProjectDAO projectDAO) {
+    public FunctionServiceImpl(FunctionDAO functionDAO, ProjectDAO projectDAO,
+                               FunctionStateHistoryDAO functionStateHistoryDAO,  UserDAO userDAO) {
         this.functionDAO = functionDAO;
         this.projectDAO = projectDAO;
+        this.functionStateHistoryDAO = functionStateHistoryDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -118,6 +127,20 @@ public class FunctionServiceImpl implements FunctionService {
             Map<String, Object> projectParam = new HashMap<>(1);
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
+
+            Map<String, Object> historyParams = new HashMap<>(2);
+            historyParams.put("functionId", functionDTO.getId());
+            historyParams.put("functionStateId", functionDTO.getCurrentStateId());
+            FunctionStateHistory functionStateHistory = functionStateHistoryDAO.selectOne(historyParams);
+
+            Map<String, Object> userParams = new HashMap<>(1);
+            userParams.put("id", functionStateHistory.getAssigner());
+            User assigner = userDAO.selectOne(userParams);
+            functionDTO.setCurrentHandlePerson(assigner.getName());
+
+            userParams.put("id", functionDTO.getCreatedBy());
+            User createdUser = userDAO.selectOne(userParams);
+            functionDTO.setCreatedName(createdUser.getName());
         }
         return functionDTO;
     }

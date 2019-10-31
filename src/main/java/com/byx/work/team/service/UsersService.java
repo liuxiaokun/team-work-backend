@@ -1,8 +1,8 @@
 package com.byx.work.team.service;
 
 import com.byx.work.team.exception.BizException;
-import com.byx.work.team.model.dto.UsersDTO;
-import com.byx.work.team.model.entity.Users;
+import com.byx.work.team.model.dto.UserDTO;
+import com.byx.work.team.model.entity.User;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
 
@@ -23,7 +23,7 @@ public interface UsersService {
      * @param users 待保存的数据。
      * @throws BizException 保存失败异常。
      */
-    void saveUsers(Users users) throws BizException;
+    void saveUsers(User users) throws BizException;
 
     /**
      * 保存多条 Users 数据。
@@ -31,14 +31,14 @@ public interface UsersService {
      * @param usersList 待保存的数据列表。
      * @throws BizException 保存失败异常。
      */
-    void saveUsersList(List<Users> usersList) throws BizException;
+    void saveUsersList(List<User> usersList) throws BizException;
 
     /**
      * 根据id更新 Users，字段为null的选项会把数据库字段更新为null，即全部更新。
      *
      * @param users 更新的目标数据。
      */
-    void updateUsers(Users users);
+    void updateUsers(User users);
 
     /**
      * 根据Id部分更新实体 Users。
@@ -71,7 +71,7 @@ public interface UsersService {
      * @param id 数据唯一id。
      * @return 查询到的 Users 数据。
      */
-    UsersDTO findUsersById(Long id);
+    UserDTO findUsersById(Long id);
 
     /**
      * 根据条件查询得到第一条 Users。
@@ -79,7 +79,7 @@ public interface UsersService {
      * @param params 查询条件
      * @return 符合条件的一个 Users。
      */
-    UsersDTO findOneUsers(Map<String, Object> params);
+    UserDTO findOneUsers(Map<String, Object> params);
 
     /**
      * 根据查询条件得到数据列表，包含分页和排序信息。
@@ -89,7 +89,7 @@ public interface UsersService {
      * @param pc 分页信息。
      * @return 查询结果的数据集合。
      */
-    List<UsersDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
+    List<UserDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
 
     /**
      * 根据查询条件得到指定字段集合的数据列表，包含分页和排序信息。

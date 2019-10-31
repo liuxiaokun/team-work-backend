@@ -41,22 +41,21 @@ public class FunctionDTO extends BaseDTO implements Serializable {
     @ApiModelProperty(value = "当前任务状态", name = "currentStateName")
     private String currentStateName;
 
+    private String currentHandlePerson;
+
     @ApiModelProperty(value = "开发开始时间", name = "devStartTime")
-    @JsonSerialize(using = LongDateSerializer.class)
     private Long devStartTime;
 
     @ApiModelProperty(value = "测试开始时间", name = "testStartTime")
-    @JsonSerialize(using = LongDateSerializer.class)
     private Long testStartTime;
 
     @ApiModelProperty(value = "发布开始时间", name = "deployStartTime")
-    @JsonSerialize(using = LongDateSerializer.class)
     private Long deployStartTime;
 
     @ApiModelProperty(value = "功能完成时间", name = "deadline")
-    @JsonSerialize(using = LongDateSerializer.class)
     private Long deadline;
 
+    private String createdName;
     private Integer completePercent;
     private Integer timeCostPercent;
 }

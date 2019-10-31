@@ -1,8 +1,8 @@
 package com.byx.work.team.service;
 
 import com.byx.work.team.exception.BizException;
-import com.byx.work.team.model.dto.RolePermissionsDTO;
-import com.byx.work.team.model.entity.RolePermissions;
+import com.byx.work.team.model.dto.RolePermissionDTO;
+import com.byx.work.team.model.entity.RolePermission;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
 
@@ -23,7 +23,7 @@ public interface RolePermissionsService {
      * @param rolePermissions 待保存的数据。
      * @throws BizException 保存失败异常。
      */
-    void saveRolePermissions(RolePermissions rolePermissions) throws BizException;
+    void saveRolePermissions(RolePermission rolePermissions) throws BizException;
 
     /**
      * 保存多条 RolePermissions 数据。
@@ -31,14 +31,14 @@ public interface RolePermissionsService {
      * @param rolePermissionsList 待保存的数据列表。
      * @throws BizException 保存失败异常。
      */
-    void saveRolePermissionsList(List<RolePermissions> rolePermissionsList) throws BizException;
+    void saveRolePermissionsList(List<RolePermission> rolePermissionsList) throws BizException;
 
     /**
      * 根据id更新 RolePermissions，字段为null的选项会把数据库字段更新为null，即全部更新。
      *
      * @param rolePermissions 更新的目标数据。
      */
-    void updateRolePermissions(RolePermissions rolePermissions);
+    void updateRolePermissions(RolePermission rolePermissions);
 
     /**
      * 根据Id部分更新实体 RolePermissions。
@@ -71,7 +71,7 @@ public interface RolePermissionsService {
      * @param id 数据唯一id。
      * @return 查询到的 RolePermissions 数据。
      */
-    RolePermissionsDTO findRolePermissionsById(Long id);
+    RolePermissionDTO findRolePermissionsById(Long id);
 
     /**
      * 根据条件查询得到第一条 RolePermissions。
@@ -79,7 +79,7 @@ public interface RolePermissionsService {
      * @param params 查询条件
      * @return 符合条件的一个 RolePermissions。
      */
-    RolePermissionsDTO findOneRolePermissions(Map<String, Object> params);
+    RolePermissionDTO findOneRolePermissions(Map<String, Object> params);
 
     /**
      * 根据查询条件得到数据列表，包含分页和排序信息。
@@ -89,7 +89,7 @@ public interface RolePermissionsService {
      * @param pc 分页信息。
      * @return 查询结果的数据集合。
      */
-    List<RolePermissionsDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
+    List<RolePermissionDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
 
     /**
      * 根据查询条件得到指定字段集合的数据列表，包含分页和排序信息。
