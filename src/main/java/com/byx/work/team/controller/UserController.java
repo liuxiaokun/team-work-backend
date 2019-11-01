@@ -25,7 +25,7 @@ import java.util.*;
  * @since 2019/10/28
  */
 @RestController
-@RequestMapping(value = "/users", name = "用户表")
+@RequestMapping(value = "/user", name = "用户表")
 @Slf4j
 @Api("用户表")
 public class UserController extends BaseController<User> {
