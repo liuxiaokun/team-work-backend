@@ -5,15 +5,15 @@
 
 <mapper namespace="com.byx.work.team.dao.UserRoleDAO">
     <resultMap type="com.byx.work.team.model.entity.UserRole" id="UserRoleMap">
-        <id property="id" column="id" jdbcType="BIGINT" />
-        <result property="userId" column="user_id" jdbcType="BIGINT" />
-        <result property="roleId" column="role_id" jdbcType="BIGINT" />
-        <result property="createdBy" column="created_by" jdbcType="BIGINT" />
-        <result property="createdDate" column="created_date" jdbcType="BIGINT" />
-        <result property="modifiedBy" column="modified_by" jdbcType="BIGINT" />
-        <result property="modifiedDate" column="modified_date" jdbcType="BIGINT" />
-        <result property="ip" column="ip" jdbcType="VARCHAR" />
-        <result property="status" column="status" jdbcType="INTEGER" />
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="roleId" column="role_id" jdbcType="BIGINT"/>
+        <result property="createdBy" column="created_by" jdbcType="BIGINT"/>
+        <result property="createdDate" column="created_date" jdbcType="BIGINT"/>
+        <result property="modifiedBy" column="modified_by" jdbcType="BIGINT"/>
+        <result property="modifiedDate" column="modified_date" jdbcType="BIGINT"/>
+        <result property="ip" column="ip" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -30,29 +30,29 @@
 
     <insert id="insert" parameterType="com.byx.work.team.model.entity.UserRole">
         INSERT INTO t_user_role (
-            <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         )VALUES(
-            #{id},
-            #{userId},
-            #{roleId},
-            #{createdBy},
-            #{createdDate},
-            #{modifiedBy},
-            #{modifiedDate},
-            #{ip},
-            <choose>
-                <when test="status != null">#{status}</when>
-                <otherwise>1</otherwise>
-            </choose>
+        #{id},
+        #{userId},
+        #{roleId},
+        #{createdBy},
+        #{createdDate},
+        #{modifiedBy},
+        #{modifiedDate},
+        #{ip},
+        <choose>
+            <when test="status != null">#{status}</when>
+            <otherwise>1</otherwise>
+        </choose>
         )
     </insert>
 
     <insert id="insertList" parameterType="List">
         INSERT INTO t_user_role (
-            <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         )VALUES
         <foreach collection="list" item="data" separator=",">
-        (
+            (
             #{data.id},
             #{data.userId},
             #{data.roleId},
@@ -65,7 +65,7 @@
                 <when test="data.status != null">#{data.status}</when>
                 <otherwise>1</otherwise>
             </choose>
-        )
+            )
         </foreach>
     </insert>
 
@@ -94,7 +94,7 @@
             UPDATE t_user_role SET
         ]]>
         <foreach collection="datas.keys" item="key" separator=","
-            open=" " close=" ">
+                 open=" " close=" ">
             <if test="key != null">
                 `${key}`= #{datas[${key}]}
             </if>
@@ -105,7 +105,7 @@
                 <otherwise><![CDATA[status > 0]]></otherwise>
             </choose>
             <foreach collection="conditions.keys" item="key" separator=" AND "
-                open="AND">
+                     open="AND">
                 <if test="key != null">
                     `${key}`=#{conditions[${key}]}
                 </if>
@@ -138,7 +138,7 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
@@ -168,7 +168,7 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
@@ -198,7 +198,7 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
@@ -207,7 +207,9 @@
     </select>
 
     <select id="selectOne" parameterType="Map" resultMap="UserRoleMap">
-        SELECT <include refid="Base_Column_List" /> FROM t_user_role
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_user_role
         <trim prefix="WHERE" prefixOverrides="AND|OR">
             <choose>
                 <when test="status !=null ">status = #{status}</when>
@@ -226,7 +228,7 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
@@ -236,7 +238,9 @@
     </select>
 
     <select id="select" parameterType="Map" resultMap="UserRoleMap">
-        SELECT <include refid="Base_Column_List" /> FROM t_user_role
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_user_role
         <trim prefix="WHERE" prefixOverrides="AND|OR">
             <choose>
                 <when test="status !=null">status = #{status}</when>
@@ -255,7 +259,7 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
@@ -273,15 +277,15 @@
             LIMIT ${pc.startIndex},${pc.pageSize}
         </if>
     </select>
-    
+
     <select id="selectMap" parameterType="Map" resultType="Map">
         SELECT
-        <foreach collection="columns" item="cname" separator=","  open="`" close="`">
+        <foreach collection="columns" item="cname" separator="," open="`" close="`">
             <![CDATA[
                 ${cname}
             ]]>
         </foreach>
-         FROM t_user_role
+        FROM t_user_role
         <trim prefix="WHERE" prefixOverrides="AND|OR">
             <choose>
                 <when test="status !=null ">status = #{status}</when>
@@ -300,7 +304,7 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
@@ -342,16 +346,16 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
             </if>
         </trim>
-        GROUP BY `group` 
+        GROUP BY `group`
         ORDER BY `group` ASC
     </select>
-    
+
     <select id="sum" parameterType="Map" resultType="Double">
         <![CDATA[
             SELECT IFNULL(SUM(${sumfield}),0) AS `sum` FROM  t_user_role  
@@ -374,14 +378,14 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
             </if>
         </trim>
     </select>
-    
+
     <select id="groupSum" parameterType="Map" resultType="Map">
         <![CDATA[
             SELECT ${group} AS `group`, IFNULL(SUM(${sumfield}),0) AS `sum`  FROM  t_user_role  
@@ -404,13 +408,13 @@
                 AND `ip` = #{ip}
             </if>
             <if test="start != null  and  end != null">
-                AND `created_date` BETWEEN  #{start} AND #{end}
+                AND `created_date` BETWEEN #{start} AND #{end}
             </if>
             <if test="date != null">
                 AND `created_date` LIKE CONCAT(#{date},'%')
             </if>
         </trim>
-        GROUP BY `group` 
+        GROUP BY `group`
         ORDER BY `group` ASC
     </select>
 </mapper>

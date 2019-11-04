@@ -1,13 +1,18 @@
 package com.byx.work.team.service.impl;
 
 import com.byx.work.team.dao.OrgDAO;
+import com.byx.work.team.dao.RoleDAO;
+import com.byx.work.team.dao.UserDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.OrgDTO;
 import com.byx.work.team.model.dto.OrgTreeDTO;
+import com.byx.work.team.model.dto.UserDTO;
 import com.byx.work.team.model.entity.Org;
+import com.byx.work.team.model.entity.User;
 import com.byx.work.team.service.OrgService;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
+import com.byx.work.team.utils.BeanUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -29,10 +34,14 @@ import java.util.stream.Collectors;
 public class OrgServiceImpl implements OrgService {
 
     private final OrgDAO orgDAO;
+    private final UserDAO userDAO;
+    private final RoleDAO roleDAO;
 
     @Autowired
-    public OrgServiceImpl(OrgDAO orgDAO) {
+    public OrgServiceImpl(OrgDAO orgDAO, UserDAO userDAO, RoleDAO roleDAO) {
         this.orgDAO = orgDAO;
+        this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
     }
 
     @Override
@@ -132,11 +141,11 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public List<OrgDTO> find(Map<String, Object> params,
-        Vector<SortingContext> scs, PagingContext pc) {
+                             Vector<SortingContext> scs, PagingContext pc) {
 
         if (params.size() > 0) {
             params = params.entrySet().stream().filter(entry ->
-                (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
+                    (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
         params.put("pc", pc);
@@ -154,7 +163,7 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public List<Map> findMap(Map<String, Object> params, Vector<SortingContext> scs,
-                          PagingContext pc, String... columns) throws BizException {
+                             PagingContext pc, String... columns) throws BizException {
         if (columns.length == 0) {
             throw new BizException("columns长度不能为0");
         }
@@ -231,7 +240,7 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public List<OrgTreeDTO> tree(Long parentId, Map<String,Object> param) {
+    public List<OrgTreeDTO> tree(Long parentId, Map<String, Object> param) {
         Map<String, Object> params = new HashMap<>(1);
         Vector<SortingContext> scs = new Vector<>();
         SortingContext sortingContext = new SortingContext();
@@ -263,5 +272,64 @@ public class OrgServiceImpl implements OrgService {
             return null;
         }
         return childList;
+    }
+
+
+    @Override
+    public List<Long> findAllChildOrg(Long parentId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("parentId", parentId);
+        List<Org> originData = orgDAO.select(params);
+        return getChildrenFlat(parentId, originData, new ArrayList<>());
+    }
+
+    private List<Long> getChildrenFlat(Long parentId, List<Org> orgs, List<Long> result) {
+
+        if (!parentId.equals(0L)) {
+            result.add(parentId);
+        }
+        for (Org org : orgs) {
+            Map<String, Object> params = new HashMap<>(1);
+            params.put("parentId", org.getId());
+            List<Org> children = orgDAO.select(params);
+            if (null == children || children.size() == 0) {
+                result.add(org.getId());
+            } else {
+                getChildrenFlat(org.getId(), children, result);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int countByOrgIds(List<Long> ids, Map<String, Object> params) {
+        params.put("list", ids);
+        return userDAO.countByOrgIds(params);
+    }
+
+    @Override
+    public List<UserDTO> findByOrgIds(List<Long> ids, Map<String, Object> params,
+                                      Vector<SortingContext> scs, PagingContext pc) {
+
+        params.put("list", ids);
+
+        if (params.size() > 0) {
+            params = params.entrySet().stream().filter(entry ->
+                    (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+        params.put("pc", pc);
+        params.put("scs", scs);
+
+        List<User> users = userDAO.selectByOrgIds(params);
+        List<UserDTO> resultList = new ArrayList<>();
+
+        users.forEach(tem -> {
+            UserDTO userDTO = new UserDTO();
+            BeanUtil.copyProperties(tem, userDTO);
+            userDTO.setRoleNames(roleDAO.selectRoleNamesByUserId(userDTO.getId()));
+            resultList.add(userDTO);
+        });
+        return resultList;
     }
 }

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.sql.Time;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author liuxiaokun
@@ -47,4 +48,7 @@ public class UserDTO extends BaseDTO implements Serializable {
 
     @ApiModelProperty(value = " 状态 ", name = "state")
     private String state;
+
+    @ApiModelProperty(value = "角色名列表", name = "roleNames")
+    private List<String> roleNames;
 }

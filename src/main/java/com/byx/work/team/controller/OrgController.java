@@ -3,6 +3,7 @@ package com.byx.work.team.controller;
 import com.byx.work.team.controller.BaseController;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.OrgDTO;
+import com.byx.work.team.model.dto.UserDTO;
 import com.byx.work.team.model.entity.Org;
 import com.byx.work.team.service.OrgService;
 import com.byx.work.team.utils.BeanUtil;
@@ -164,5 +165,19 @@ public class OrgController extends BaseController<Org> {
             parentId = 0L;
         }
         return RO.success(orgService.tree(parentId,params));
+    }
+
+    @GetMapping(value = "/{orgId}/user", name = "组织下的用户")
+    public Object findOrgUsers(HttpServletRequest request, @PathVariable Long orgId) {
+        Map<String, Object> params = getConditionsMap(request);
+        List<Long> ids = orgService.findAllChildOrg(orgId);
+        int total = orgService.countByOrgIds(ids, params);
+        PagingContext pc = getPagingContext(request, total);
+        Vector<SortingContext> scs = getSortingContext(request);
+        List<UserDTO> users = new ArrayList<>();
+        if (total > 0) {
+            users = orgService.findByOrgIds(ids, params, scs, pc);
+        }
+        return RO.success(users, pc, scs);
     }
 }

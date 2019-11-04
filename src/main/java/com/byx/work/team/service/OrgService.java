@@ -3,6 +3,7 @@ package com.byx.work.team.service;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.OrgDTO;
 import com.byx.work.team.model.dto.OrgTreeDTO;
+import com.byx.work.team.model.dto.UserDTO;
 import com.byx.work.team.model.entity.Org;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
@@ -44,7 +45,7 @@ public interface OrgService {
     /**
      * 根据Id部分更新实体 Org。
      *
-     * @param dataMap 需要更新的键值对。
+     * @param dataMap      需要更新的键值对。
      * @param conditionMap where语句后的条件筛选的键值对。
      */
     void updateOrgSelective(Map<String, Object> dataMap, Map<String, Object> conditionMap);
@@ -52,7 +53,7 @@ public interface OrgService {
     /**
      * 根据id逻辑删除一条 Org。
      *
-     * @param id 数据id。
+     * @param id     数据id。
      * @param userId 删除人的id。
      * @throws BizException 逻辑删除异常。
      */
@@ -86,8 +87,8 @@ public interface OrgService {
      * 根据查询条件得到数据列表，包含分页和排序信息。
      *
      * @param params 查询条件。
-     * @param scs 排序信息。
-     * @param pc 分页信息。
+     * @param scs    排序信息。
+     * @param pc     分页信息。
      * @return 查询结果的数据集合。
      */
     List<OrgDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
@@ -95,12 +96,12 @@ public interface OrgService {
     /**
      * 根据查询条件得到指定字段集合的数据列表，包含分页和排序信息。
      *
-     * @param params 查询条件。
+     * @param params  查询条件。
      * @param columns 需要查询的字段信息。
-     * @param scs 排序信息。
-     * @param pc 分页信息。
-     * @throws BizException 查询异常。
+     * @param scs     排序信息。
+     * @param pc      分页信息。
      * @return 查询结果的数据集合。
+     * @throws BizException 查询异常。
      */
     List<Map> findMap(Map<String, Object> params, Vector<SortingContext> scs,
                       PagingContext pc, String... columns) throws BizException;
@@ -143,8 +144,38 @@ public interface OrgService {
 
     /**
      * 查询所有可用的子org，递归，以树结构展示。
+     *
      * @param parentId 组织父级id
+     * @param param    过滤参数
      * @return 递归后组织树
      */
-    List<OrgTreeDTO> tree(Long parentId, Map<String,Object> param);
+    List<OrgTreeDTO> tree(Long parentId, Map<String, Object> param);
+
+    /**
+     * 递归查询所有可用的子org的id，递归，平级结构展示。
+     *
+     * @param parentId 组织父级id
+     * @return 递归平级组织列表
+     */
+    List<Long> findAllChildOrg(Long parentId);
+
+    /**
+     * 通过组织ID的数组查询ID下挂载的用户个数。
+     *
+     * @param ids    组织id列表
+     * @param params 查询参数
+     * @return 符合条件的用户数量
+     */
+    int countByOrgIds(List<Long> ids, Map<String, Object> params);
+
+    /**
+     * 通过组织ID的数组查询ID下挂载的用户列表。
+     *
+     * @param ids    组织id列表
+     * @param params 查询参数
+     * @param scs    排序
+     * @param pc     分页
+     * @return 用户列表
+     */
+    List<UserDTO> findByOrgIds(List<Long> ids, Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
 }

@@ -637,4 +637,121 @@
         GROUP BY `group` 
         ORDER BY `group` ASC
     </select>
+
+    <select id="selectByOrgIds" parameterType="Map" resultMap="UserMap">
+        SELECT
+        users.id,
+        users.mobile,
+        users.name,
+        users.nickname,
+        users.position,
+        users.email,
+        users.state,
+        users.created_by,
+        users.created_date,
+        users.modified_by,
+        users.modified_date,
+        users.ip,
+        users.status FROM t_user users
+        INNER JOIN t_user_org user_orgs
+        ON users.id = user_orgs.user_id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null">users.status = #{status}</when>
+                <otherwise><![CDATA[users.status > 0]]></otherwise>
+            </choose>
+            <if test="mobile != null">
+                AND users.mobile = #{mobile}
+            </if>
+            <if test="name != null">
+                AND users.name = #{name}
+            </if>
+            <if test="nickname != null">
+                AND users.nickname = #{nickname}
+            </if>
+            <if test="position != null">
+                AND users.position = #{position}
+            </if>
+            <if test="email != null">
+                AND users.email = #{email}
+            </if>
+            <if test="state != null">
+                AND users.state = #{state}
+            </if>
+            <if test="keywords !=null and keywords !=''">
+                <![CDATA[
+            AND(
+                  users.mobile LIKE CONCAT('%',#{keywords},'%') OR
+                  users.name LIKE CONCAT('%',#{keywords},'%') OR
+                  users.nickname LIKE CONCAT('%',#{keywords},'%') OR
+                  users.position LIKE CONCAT('%',#{keywords},'%') OR
+                  users.email LIKE CONCAT('%',#{keywords},'%')
+                )
+            ]]>
+            </if>
+        </trim>
+        AND user_orgs.status > 0
+        AND user_orgs.org_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+        <if test="scs != null and scs.size() > 0">
+            ORDER BY
+            <foreach collection="scs" item="sc" separator=",">
+                <![CDATA[
+                    ${sc.field} ${sc.order}
+                ]]>
+            </foreach>
+        </if>
+        <if test="pc != null">
+            LIMIT ${pc.startIndex},${pc.pageSize}
+        </if>
+    </select>
+
+    <select id="countByOrgIds" parameterType="Map" resultType="Integer">
+        SELECT count(users.id) FROM t_user users
+        INNER JOIN t_user_org user_orgs
+        ON users.id = user_orgs.user_id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <choose>
+                <when test="status !=null">users.status = #{status}</when>
+                <otherwise><![CDATA[users.status > 0]]></otherwise>
+            </choose>
+            <if test="mobile != null">
+                AND users.mobile = #{mobile}
+            </if>
+            <if test="name != null">
+                AND users.name = #{name}
+            </if>
+            <if test="nickname != null">
+                AND users.nickname = #{nickname}
+            </if>
+            <if test="position != null">
+                AND users.position = #{position}
+            </if>
+            <if test="email != null">
+                AND users.email = #{email}
+            </if>
+            <if test="state != null">
+                AND users.state = #{state}
+            </if>
+            <if test="keywords !=null and keywords !=''">
+                <![CDATA[
+                AND(
+                      users.mobile LIKE CONCAT('%',#{keywords},'%') OR
+                      users.name LIKE CONCAT('%',#{keywords},'%') OR
+                      users.nickname LIKE CONCAT('%',#{keywords},'%') OR
+                      users.position LIKE CONCAT('%',#{keywords},'%') OR
+                      users.email LIKE CONCAT('%',#{keywords},'%')
+                    )
+                ]]>
+            </if>
+        </trim>
+        AND user_orgs.status > 0
+        AND user_orgs.org_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>
