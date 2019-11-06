@@ -1,6 +1,9 @@
 package com.byx.work.team.service.impl;
 
+import com.byx.work.team.dao.FunctionDAO;
+import com.byx.work.team.dao.FunctionStateDAO;
 import com.byx.work.team.dao.FunctionStateHistoryDAO;
+import com.byx.work.team.dao.UserDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionStateHistoryDTO;
 import com.byx.work.team.model.entity.FunctionStateHistory;
@@ -28,10 +31,17 @@ import java.util.stream.Collectors;
 public class FunctionStateHistoryServiceImpl implements FunctionStateHistoryService {
 
     private final FunctionStateHistoryDAO functionStateHistoryDAO;
+    private final UserDAO userDAO;
+    private final FunctionStateDAO functionStateDAO;
+    private final FunctionDAO functionDAO;
 
     @Autowired
-    public FunctionStateHistoryServiceImpl(FunctionStateHistoryDAO functionStateHistoryDAO) {
+    public FunctionStateHistoryServiceImpl(FunctionStateHistoryDAO functionStateHistoryDAO, UserDAO userDAO
+            , FunctionStateDAO functionStateDAO, FunctionDAO functionDAO) {
         this.functionStateHistoryDAO = functionStateHistoryDAO;
+        this.userDAO = userDAO;
+        this.functionStateDAO = functionStateDAO;
+        this.functionDAO = functionDAO;
     }
 
     @Override
@@ -131,11 +141,11 @@ public class FunctionStateHistoryServiceImpl implements FunctionStateHistoryServ
 
     @Override
     public List<FunctionStateHistoryDTO> find(Map<String, Object> params,
-        Vector<SortingContext> scs, PagingContext pc) {
+                                              Vector<SortingContext> scs, PagingContext pc) {
 
         if (params.size() > 0) {
             params = params.entrySet().stream().filter(entry ->
-                (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
+                    (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
         params.put("pc", pc);
@@ -145,6 +155,16 @@ public class FunctionStateHistoryServiceImpl implements FunctionStateHistoryServ
         functionStateHistoryList.forEach(tem -> {
             FunctionStateHistoryDTO functionStateHistoryDTO = new FunctionStateHistoryDTO();
             BeanUtils.copyProperties(tem, functionStateHistoryDTO);
+
+            Map<String, Object> para = new HashMap<>(1);
+            para.put("id", functionStateHistoryDTO.getAssigner());
+            functionStateHistoryDTO.setAssignerName(userDAO.selectOne(para).getName());
+
+            para.put("id", functionStateHistoryDTO.getFunctionStateId());
+            functionStateHistoryDTO.setFunctionStateName(functionStateDAO.selectOne(para).getName());
+
+            para.put("id", functionStateHistoryDTO.getFunctionId());
+            functionStateHistoryDTO.setFunctionName(functionDAO.selectOne(para).getName());
             resultList.add(functionStateHistoryDTO);
         });
 
@@ -153,7 +173,7 @@ public class FunctionStateHistoryServiceImpl implements FunctionStateHistoryServ
 
     @Override
     public List<Map> findMap(Map<String, Object> params, Vector<SortingContext> scs,
-                          PagingContext pc, String... columns) throws BizException {
+                             PagingContext pc, String... columns) throws BizException {
         if (columns.length == 0) {
             throw new BizException("columns长度不能为0");
         }

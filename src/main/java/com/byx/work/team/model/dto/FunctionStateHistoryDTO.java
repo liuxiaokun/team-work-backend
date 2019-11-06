@@ -24,9 +24,15 @@ public class FunctionStateHistoryDTO extends BaseDTO implements Serializable {
     @ApiModelProperty(value = "", name = "functionId")
     private Long functionId;
 
+    private String functionName;
+
     @ApiModelProperty(value = "", name = "functionStateId")
     private Long functionStateId;
 
+    private String functionStateName;
+
     @ApiModelProperty(value = "", name = "assigner")
     private Long assigner;
+
+    private String assignerName;
 }
