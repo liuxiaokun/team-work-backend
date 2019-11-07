@@ -1,9 +1,7 @@
 package com.byx.work.team.service.impl;
 
-import com.byx.work.team.dao.FunctionDAO;
-import com.byx.work.team.dao.FunctionStateHistoryDAO;
-import com.byx.work.team.dao.ProjectDAO;
-import com.byx.work.team.dao.UserDAO;
+import com.byx.framework.core.context.AppContext;
+import com.byx.work.team.dao.*;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
@@ -35,14 +33,16 @@ import java.util.stream.Collectors;
 public class FunctionServiceImpl implements FunctionService {
 
     private final FunctionDAO functionDAO;
+    private final FunctionStateDAO functionStateDAO;
     private final ProjectDAO projectDAO;
     private final FunctionStateHistoryDAO functionStateHistoryDAO;
     private final UserDAO userDAO;
 
     @Autowired
-    public FunctionServiceImpl(FunctionDAO functionDAO, ProjectDAO projectDAO,
-                               FunctionStateHistoryDAO functionStateHistoryDAO,  UserDAO userDAO) {
+    public FunctionServiceImpl(FunctionDAO functionDAO, ProjectDAO projectDAO, FunctionStateDAO functionStateDAO,
+                               FunctionStateHistoryDAO functionStateHistoryDAO, UserDAO userDAO) {
         this.functionDAO = functionDAO;
+        this.functionStateDAO = functionStateDAO;
         this.projectDAO = projectDAO;
         this.functionStateHistoryDAO = functionStateHistoryDAO;
         this.userDAO = userDAO;
@@ -51,6 +51,40 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public void saveFunction(@NonNull Function function) throws BizException {
         log.info("save Function:{}", function);
+
+        if (function.getDevStartTime() < function.getCreatedDate()) {
+            throw new BizException("项目开始时间不能晚于需求创建时间");
+        }
+
+        if (function.getTestStartTime() < function.getDevStartTime()) {
+            throw new BizException("项目测试时间不能晚于开发时间");
+        }
+
+        if (function.getDeployStartTime() < function.getTestStartTime()) {
+            throw new BizException("项目部署时间不能晚于测试时间");
+        }
+
+        if (function.getDeadline() < function.getDeployStartTime()) {
+            throw new BizException("项目结束时间不能晚于部署时间");
+        }
+
+        if(null != function.getCurrentStateId()) {
+            Map<String, Object> stateParams = new HashMap<>(1);
+            stateParams.put("id", function.getCurrentStateId());
+            function.setCurrentStateName(functionStateDAO.selectOne(stateParams).getName());
+
+            // 创建相应的状态变化记录
+            FunctionStateHistory functionStateHistory = new FunctionStateHistory();
+            functionStateHistory.setAssigner(function.getCreatedBy());
+            functionStateHistory.setFunctionId(function.getId());
+            functionStateHistory.setFunctionStateId(function.getCurrentStateId());
+            functionStateHistory.setStatus(1);
+            functionStateHistory.setCreatedBy(function.getCreatedBy());
+            functionStateHistory.setCreatedDate(System.currentTimeMillis());
+            functionStateHistory.setIp(function.getIp());
+            functionStateHistory.setId(AppContext.IdGen.nextId());
+            functionStateHistoryDAO.insert(functionStateHistory);
+        }
         if (functionDAO.insert(function) != 1) {
             log.error("insert error, data:{}", function);
             throw new BizException("Insert Function Error!");
@@ -122,24 +156,29 @@ public class FunctionServiceImpl implements FunctionService {
         Function function = functionDAO.selectOne(params);
         FunctionDTO functionDTO = new FunctionDTO();
 
-        if (null != function) {
+        if (null != function.getId()) {
             BeanUtils.copyProperties(function, functionDTO);
             Map<String, Object> projectParam = new HashMap<>(1);
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
 
-            Map<String, Object> historyParams = new HashMap<>(2);
-            historyParams.put("functionId", functionDTO.getId());
-            historyParams.put("functionStateId", functionDTO.getCurrentStateId());
-            FunctionStateHistory functionStateHistory = functionStateHistoryDAO.selectOne(historyParams);
+            if (null != function.getCurrentStateId()) {
+                Map<String, Object> historyParams = new HashMap<>(2);
+                historyParams.put("functionId", functionDTO.getId());
+                historyParams.put("functionStateId", functionDTO.getCurrentStateId());
+                FunctionStateHistory functionStateHistory = functionStateHistoryDAO.selectOne(historyParams);
 
-            Map<String, Object> userParams = new HashMap<>(1);
-            userParams.put("id", functionStateHistory.getAssigner());
-            User assigner = userDAO.selectOne(userParams);
-            functionDTO.setCurrentHandlePerson(assigner.getName());
+                if(null != functionStateHistory.getId()) {
+                    Map<String, Object> userParams = new HashMap<>(1);
+                    userParams.put("id", functionStateHistory.getAssigner());
+                    User assigner = userDAO.selectOne(userParams);
+                    functionDTO.setCurrentHandlePerson(assigner.getName());
+                }
+            }
 
-            userParams.put("id", functionDTO.getCreatedBy());
-            User createdUser = userDAO.selectOne(userParams);
+            Map<String, Object> createdByParams = new HashMap<>(1);
+            createdByParams.put("id", functionDTO.getCreatedBy());
+            User createdUser = userDAO.selectOne(createdByParams);
             functionDTO.setCreatedName(createdUser.getName());
         }
         return functionDTO;
@@ -187,9 +226,9 @@ public class FunctionServiceImpl implements FunctionService {
             Long devStartTime = functionDTO.getDevStartTime();
             long now = System.currentTimeMillis();
             int result = 0;
-            if(now > deadline ) {
+            if (now > deadline) {
                 result = 100;
-            } else if(now > devStartTime) {
+            } else if (now > devStartTime) {
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 numberFormat.setMaximumFractionDigits(2);
 
