@@ -5,6 +5,7 @@ import com.byx.work.team.dao.*;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
+import com.byx.work.team.model.entity.FunctionState;
 import com.byx.work.team.model.entity.FunctionStateHistory;
 import com.byx.work.team.model.entity.User;
 import com.byx.work.team.service.FunctionService;
@@ -183,23 +184,56 @@ public class FunctionServiceImpl implements FunctionService {
             functionDTO.setCreatedName(createdUser.getName());
 
             //计算时间消耗百分比
-            Long deadline = functionDTO.getDeadline();
-            Long devStartTime = functionDTO.getDevStartTime();
-            long now = System.currentTimeMillis();
-            int result = 0;
-            if (now > deadline) {
-                result = 100;
-            } else if (now > devStartTime) {
-                NumberFormat numberFormat = NumberFormat.getInstance();
-                numberFormat.setMaximumFractionDigits(2);
-
-                BigDecimal usedTime = new BigDecimal(now - devStartTime);
-                BigDecimal allTime = new BigDecimal(deadline - devStartTime);
-                result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
-            }
-            functionDTO.setTimeCostPercent(result);
+            calcTimeCostPercent(functionDTO);
+            //计算进度百分比
+            calcFunctionComplete(function, functionDTO);
         }
         return functionDTO;
+    }
+
+    private void calcFunctionComplete(Function function, FunctionDTO functionDTO) {
+        Map<String, Object> stateParam = new HashMap<>(2);
+        Vector<SortingContext> scs = new Vector<>();
+        SortingContext sc = new SortingContext();
+        sc.setField("priority");
+        sc.setOrder("desc");
+        scs.add(sc);
+        stateParam.put("scs", scs);
+        stateParam.put("enabled", 1);
+        List<FunctionState> functionStates = functionStateDAO.select(stateParam);
+        Integer maxPriority = 1;
+        Integer currentState = 0;
+
+        for (int i = 0; i < functionStates.size(); i++) {
+            FunctionState functionState = functionStates.get(i);
+            if (i == 0) {
+                maxPriority = functionState.getPriority();
+            }
+            if (function.getCurrentStateId().equals(functionState.getId())) {
+                currentState = functionState.getPriority();
+            }
+        }
+
+        functionDTO.setCompletePercent(new BigDecimal(currentState).divide(new BigDecimal(maxPriority), 2, BigDecimal.ROUND_HALF_UP)
+                .multiply(new BigDecimal(100)).intValue());
+    }
+
+    private void calcTimeCostPercent(FunctionDTO functionDTO) {
+        Long deadline = functionDTO.getDeadline();
+        Long devStartTime = functionDTO.getDevStartTime();
+        long now = System.currentTimeMillis();
+        int result = 0;
+        if (now > deadline) {
+            result = 100;
+        } else if (now > devStartTime) {
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setMaximumFractionDigits(2);
+
+            BigDecimal usedTime = new BigDecimal(now - devStartTime);
+            BigDecimal allTime = new BigDecimal(deadline - devStartTime);
+            result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
+        }
+        functionDTO.setTimeCostPercent(result);
     }
 
     @Override
@@ -218,21 +252,9 @@ public class FunctionServiceImpl implements FunctionService {
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
 
             //计算时间消耗
-            Long deadline = functionDTO.getDeadline();
-            Long devStartTime = functionDTO.getDevStartTime();
-            long now = System.currentTimeMillis();
-            int result = 0;
-            if (now > deadline) {
-                result = 100;
-            } else if (now > devStartTime) {
-                NumberFormat numberFormat = NumberFormat.getInstance();
-                numberFormat.setMaximumFractionDigits(2);
+            calcTimeCostPercent(functionDTO);
 
-                BigDecimal usedTime = new BigDecimal(now - devStartTime);
-                BigDecimal allTime = new BigDecimal(deadline - devStartTime);
-                result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
-            }
-            functionDTO.setTimeCostPercent(result);
+            calcFunctionComplete(function, functionDTO);
         }
 
         return functionDTO;
@@ -258,21 +280,7 @@ public class FunctionServiceImpl implements FunctionService {
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
 
-            Long deadline = functionDTO.getDeadline();
-            Long devStartTime = functionDTO.getDevStartTime();
-            long now = System.currentTimeMillis();
-            int result = 0;
-            if (now > deadline) {
-                result = 100;
-            } else if (now > devStartTime) {
-                NumberFormat numberFormat = NumberFormat.getInstance();
-                numberFormat.setMaximumFractionDigits(2);
-
-                BigDecimal usedTime = new BigDecimal(now - devStartTime);
-                BigDecimal allTime = new BigDecimal(deadline - devStartTime);
-                result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
-            }
-            functionDTO.setTimeCostPercent(result);
+            calcTimeCostPercent(functionDTO);
             resultList.add(functionDTO);
         });
 
