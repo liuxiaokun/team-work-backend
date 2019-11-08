@@ -10,6 +10,7 @@ import com.byx.work.team.model.entity.User;
 import com.byx.work.team.service.FunctionService;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
+import io.swagger.models.auth.In;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -68,7 +69,7 @@ public class FunctionServiceImpl implements FunctionService {
             throw new BizException("项目结束时间不能晚于部署时间");
         }
 
-        if(null != function.getCurrentStateId()) {
+        if (null != function.getCurrentStateId()) {
             Map<String, Object> stateParams = new HashMap<>(1);
             stateParams.put("id", function.getCurrentStateId());
             function.setCurrentStateName(functionStateDAO.selectOne(stateParams).getName());
@@ -168,7 +169,7 @@ public class FunctionServiceImpl implements FunctionService {
                 historyParams.put("functionStateId", functionDTO.getCurrentStateId());
                 FunctionStateHistory functionStateHistory = functionStateHistoryDAO.selectOne(historyParams);
 
-                if(null != functionStateHistory.getId()) {
+                if (null != functionStateHistory.getId()) {
                     Map<String, Object> userParams = new HashMap<>(1);
                     userParams.put("id", functionStateHistory.getAssigner());
                     User assigner = userDAO.selectOne(userParams);
@@ -180,6 +181,23 @@ public class FunctionServiceImpl implements FunctionService {
             createdByParams.put("id", functionDTO.getCreatedBy());
             User createdUser = userDAO.selectOne(createdByParams);
             functionDTO.setCreatedName(createdUser.getName());
+
+            //计算时间消耗百分比
+            Long deadline = functionDTO.getDeadline();
+            Long devStartTime = functionDTO.getDevStartTime();
+            long now = System.currentTimeMillis();
+            int result = 0;
+            if (now > deadline) {
+                result = 100;
+            } else if (now > devStartTime) {
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                numberFormat.setMaximumFractionDigits(2);
+
+                BigDecimal usedTime = new BigDecimal(now - devStartTime);
+                BigDecimal allTime = new BigDecimal(deadline - devStartTime);
+                result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
+            }
+            functionDTO.setTimeCostPercent(result);
         }
         return functionDTO;
     }
@@ -193,12 +211,30 @@ public class FunctionServiceImpl implements FunctionService {
         }
         Function function = functionDAO.selectOne(params);
         FunctionDTO functionDTO = new FunctionDTO();
-        if (null != function) {
+        if (null != function && null != function.getId()) {
             BeanUtils.copyProperties(function, functionDTO);
             Map<String, Object> projectParam = new HashMap<>(1);
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
+
+            //计算时间消耗
+            Long deadline = functionDTO.getDeadline();
+            Long devStartTime = functionDTO.getDevStartTime();
+            long now = System.currentTimeMillis();
+            int result = 0;
+            if (now > deadline) {
+                result = 100;
+            } else if (now > devStartTime) {
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                numberFormat.setMaximumFractionDigits(2);
+
+                BigDecimal usedTime = new BigDecimal(now - devStartTime);
+                BigDecimal allTime = new BigDecimal(deadline - devStartTime);
+                result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
+            }
+            functionDTO.setTimeCostPercent(result);
         }
+
         return functionDTO;
     }
 
