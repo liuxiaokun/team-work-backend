@@ -237,10 +237,9 @@ public class FunctionStateServiceImpl implements FunctionStateService {
         params.put("currentStateId", currentStateId);
         FunctionState functionState = functionStateDAO.queryNextState(params);
 
-        FunctionStateDTO functionStateDTO = null;
+        FunctionStateDTO functionStateDTO = new FunctionStateDTO();;
 
         if(null != functionState) {
-            functionStateDTO = new FunctionStateDTO();
             BeanUtil.copyProperties(functionState, functionStateDTO);
         }
 

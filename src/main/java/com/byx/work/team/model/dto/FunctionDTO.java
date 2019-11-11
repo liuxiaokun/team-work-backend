@@ -4,6 +4,7 @@ import com.byx.work.team.config.LongDateSerializer;
 import com.byx.work.team.model.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class FunctionDTO extends BaseDTO implements Serializable {
     private String desc;
 
     @ApiModelProperty(value = "当前任务状态ID", name = "currentStateId")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long currentStateId;
 
     @ApiModelProperty(value = "当前任务状态", name = "currentStateName")
