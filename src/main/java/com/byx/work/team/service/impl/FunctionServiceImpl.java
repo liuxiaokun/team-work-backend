@@ -115,12 +115,29 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateFunctionSelective(@NonNull Map<String, Object> dataMap, @NonNull Map<String, Object> conditionMap) {
         log.info("part update dataMap:{}, conditionMap:{}", dataMap, conditionMap);
         Map<String, Object> params = new HashMap<>(2);
         params.put("datas", dataMap);
         params.put("conditions", conditionMap);
+        Long assigner = Long.parseLong(dataMap.get("assigner").toString());
+        dataMap.remove("assigner");
         functionDAO.updatex(params);
+
+        if(dataMap.containsKey("current_state_id")) {
+
+            FunctionStateHistory functionStateHistory = new FunctionStateHistory();
+            functionStateHistory.setId(AppContext.IdGen.nextId());
+            functionStateHistory.setFunctionId(Long.parseLong(conditionMap.get("id").toString()));
+            functionStateHistory.setFunctionStateId(Long.parseLong(dataMap.get("current_state_id").toString()));
+            functionStateHistory.setCreatedDate(System.currentTimeMillis());
+            functionStateHistory.setCreatedBy(Long.parseLong(dataMap.get("modified_by").toString()));
+            functionStateHistory.setStatus(1);
+            functionStateHistory.setIp("127.0.0.1");
+            functionStateHistory.setAssigner(assigner);
+            functionStateHistoryDAO.insert(functionStateHistory);
+        }
     }
 
     @Override
