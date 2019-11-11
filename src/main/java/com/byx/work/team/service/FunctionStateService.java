@@ -139,4 +139,12 @@ public interface FunctionStateService {
      * @return 查询结果 key为查询字段的值，value为查询字段的求和。
      */
     Map<String, Double> groupSum(String group, String sumField, Map<String, Object> conditions);
+
+    /**
+     * 根据指定得状态id, 查询下一个状态
+     * @param currentStateId 指定的状态ID
+     * @return 指定状态的下一个状态的信息
+     */
+    FunctionStateDTO queryNextState(Long currentStateId);
+
 }

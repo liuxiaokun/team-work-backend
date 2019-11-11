@@ -7,6 +7,7 @@ import com.byx.work.team.model.entity.FunctionState;
 import com.byx.work.team.service.FunctionStateService;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
+import com.byx.work.team.utils.BeanUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -227,5 +228,22 @@ public class FunctionStateServiceImpl implements FunctionStateService {
             map.put(key, sum);
         }
         return map;
+    }
+
+    @Override
+    public FunctionStateDTO queryNextState(Long currentStateId) {
+
+        Map<String, Object> params = new HashMap<>(1);
+        params.put("currentStateId", currentStateId);
+        FunctionState functionState = functionStateDAO.queryNextState(params);
+
+        FunctionStateDTO functionStateDTO = null;
+
+        if(null != functionState) {
+            functionStateDTO = new FunctionStateDTO();
+            BeanUtil.copyProperties(functionState, functionStateDTO);
+        }
+
+        return functionStateDTO;
     }
 }

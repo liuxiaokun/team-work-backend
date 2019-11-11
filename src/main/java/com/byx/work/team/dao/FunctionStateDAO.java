@@ -4,6 +4,8 @@ import com.byx.work.team.model.entity.FunctionState;
 import com.byx.work.team.dao.BaseDAO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
+
 /**
  * @author liuxiaokun
  * @version 0.0.1
@@ -11,4 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface FunctionStateDAO extends BaseDAO<FunctionState> {
+
+    FunctionState queryNextState(Map<String, Object> params);
 }

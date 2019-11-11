@@ -155,4 +155,12 @@ public class FunctionStateController extends BaseController<FunctionState> {
         Map<String, Integer> result = functionStateService.groupCount(groupField, params);
         return RO.success(result);
     }
+
+    @GetMapping(value = "/next/{currentStateId}", name = "查找下一个状态")
+    public Object nextState(@PathVariable Long currentStateId, HttpServletRequest request) {
+        log.info("currentStateId:{}", currentStateId);
+        Map<String, Object> params = getConditionsMap(request);
+        FunctionStateDTO functionStateDTO = functionStateService.queryNextState(currentStateId);
+        return RO.success(functionStateDTO);
+    }
 }
