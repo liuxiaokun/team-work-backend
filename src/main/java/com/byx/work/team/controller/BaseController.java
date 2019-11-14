@@ -1,12 +1,14 @@
 package com.byx.work.team.controller;
 
 import com.byx.framework.core.utils.StringUtil;
+import com.byx.work.team.config.JwtAuthConfig;
 import com.byx.work.team.model.entity.BaseEntity;
 import com.byx.framework.core.context.AppContext;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +53,7 @@ public class BaseController<T extends BaseEntity> {
         String jwt = request.getHeader("Authorization");
 
         Claims claims = Jwts.parser()
-                .setSigningKey("my-secret".getBytes())
+                .setSigningKey("team-work".getBytes())
                 .parseClaimsJws(jwt.replace("Bearer ", ""))
                 .getBody();
         return Long.parseLong(claims.getSubject());
