@@ -21,5 +21,9 @@ public class OrgTreeDTO {
     private String code;
     private String title;
     private Integer priority;
+    /**
+     * 用于前端展开树节点
+     */
+    private Boolean expand = true;
     private List<OrgTreeDTO> children;
 }
