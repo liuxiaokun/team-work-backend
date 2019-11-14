@@ -1,9 +1,11 @@
 package com.byx.work.team.service.impl;
 
 import com.byx.work.team.dao.FunctionDAO;
+import com.byx.work.team.dao.FunctionStateDAO;
 import com.byx.work.team.dao.ProjectDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.ProjectDTO;
+import com.byx.work.team.model.entity.FunctionState;
 import com.byx.work.team.model.entity.Project;
 import com.byx.work.team.service.ProjectService;
 import com.byx.framework.core.domain.PagingContext;
@@ -32,11 +34,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectDAO projectDAO;
     private final FunctionDAO functionDAO;
+    private final FunctionStateDAO functionStateDAO;
 
     @Autowired
-    public ProjectServiceImpl(ProjectDAO projectDAO, FunctionDAO functionDAO) {
+    public ProjectServiceImpl(ProjectDAO projectDAO, FunctionDAO functionDAO, FunctionStateDAO functionStateDAO) {
         this.projectDAO = projectDAO;
         this.functionDAO = functionDAO;
+        this.functionStateDAO = functionStateDAO;
     }
 
     @Override
@@ -150,11 +154,21 @@ public class ProjectServiceImpl implements ProjectService {
         projectList.forEach(tem -> {
             ProjectDTO projectDTO = new ProjectDTO();
             BeanUtils.copyProperties(tem, projectDTO);
-            Map<String, Object> condition = new HashMap<>();
+            Map<String, Object> condition = new HashMap<>(2);
             condition.put("projectId", tem.getId());
             int count = functionDAO.count(condition);
 
-            condition.put("currentStateId", 444);
+            Map<String, Object> endParams = new HashMap<>(2);
+            Vector<SortingContext> scses = new Vector<>(2);
+            SortingContext sc = new SortingContext();
+            sc.setField("priority");
+            sc.setOrder("desc");
+            scses.add(sc);
+            endParams.put("scs", scses);
+            endParams.put("enabled", 1);
+            List<FunctionState> functionStates = functionStateDAO.select(endParams);
+
+            condition.put("currentStateId", functionStates.get(0).getId());
             int completeCount = functionDAO.count(condition);
 
             NumberFormat numberFormat = NumberFormat.getInstance();

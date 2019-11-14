@@ -59,6 +59,7 @@ public class LoginController {
                 .signWith(SignatureAlgorithm.HS256, jwtAuthConfig.getSecret().getBytes())
                 .compact();
         response.setHeader(jwtAuthConfig.getHeader(), jwtAuthConfig.getPrefix() + " " + token);
+        response.setHeader("Access-Control-Expose-Headers", "*");
         return RO.success(oneUsers);
     }
 }
