@@ -645,6 +645,7 @@
         users.name,
         users.nickname,
         users.position,
+        users.serial_number,
         users.email,
         users.state,
         users.created_by,
