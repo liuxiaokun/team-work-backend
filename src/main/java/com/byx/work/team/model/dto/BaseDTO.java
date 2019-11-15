@@ -31,6 +31,11 @@ public class BaseDTO {
     private Long createdBy;
 
     /**
+     * 创建人Name
+     */
+    private String createdByName;
+
+    /**
      * 创建时间，存储时间戳。
      * 获取示例：<code>System.currentTimeMillis()</code>
      */
@@ -42,6 +47,8 @@ public class BaseDTO {
      * 获取示例：<code>BaseController#getUserId(request)</code>
      */
     private Long modifiedBy;
+
+    private Long modifiedByName;
 
     /**
      * 最后修改时间，存储时间戳。

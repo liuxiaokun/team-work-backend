@@ -160,6 +160,9 @@ public class FunctionStateHistoryServiceImpl implements FunctionStateHistoryServ
             para.put("id", functionStateHistoryDTO.getAssigner());
             functionStateHistoryDTO.setAssignerName(userDAO.selectOne(para).getName());
 
+            para.put("id", functionStateHistoryDTO.getCreatedBy());
+            functionStateHistoryDTO.setCreatedByName(userDAO.selectOne(para).getName());
+
             para.put("id", functionStateHistoryDTO.getFunctionStateId());
             functionStateHistoryDTO.setFunctionStateName(functionStateDAO.selectOne(para).getName());
 
