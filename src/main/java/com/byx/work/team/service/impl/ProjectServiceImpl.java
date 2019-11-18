@@ -4,7 +4,9 @@ import com.byx.work.team.dao.FunctionDAO;
 import com.byx.work.team.dao.FunctionStateDAO;
 import com.byx.work.team.dao.ProjectDAO;
 import com.byx.work.team.exception.BizException;
+import com.byx.work.team.model.dto.ProjectCascadeDTO;
 import com.byx.work.team.model.dto.ProjectDTO;
+import com.byx.work.team.model.entity.Function;
 import com.byx.work.team.model.entity.FunctionState;
 import com.byx.work.team.model.entity.Project;
 import com.byx.work.team.service.ProjectService;
@@ -181,6 +183,37 @@ public class ProjectServiceImpl implements ProjectService {
         });
 
         return resultList;
+    }
+
+    @Override
+    public List<ProjectCascadeDTO> find(Map<String, Object> params) {
+        List<ProjectCascadeDTO> dtos = new ArrayList<>();
+        List<Project> projectList = projectDAO.select(params);
+        ProjectCascadeDTO dto = null;
+        if(null != projectList && projectList.size() > 0) {
+            for (Project project : projectList) {
+                dto = new ProjectCascadeDTO();
+                dto.setLabel(project.getName());
+                dto.setValue(project.getId());
+                Map<String, Object> functionParam = new HashMap<>(1);
+                functionParam.put("projectId", project.getId());
+                List<Function> functions = functionDAO.select(functionParam);
+
+                if(null != functions && functions.size() > 0) {
+                    List<ProjectCascadeDTO> innerDtos = functions.stream().map(tem -> {
+                        ProjectCascadeDTO inner = new ProjectCascadeDTO();
+                        inner.setLabel(tem.getName());
+                        inner.setValue(tem.getId());
+                        return inner;
+                    }).collect(Collectors.toList());
+                    dto.setChildren(innerDtos);
+                } else {
+                    dto.setDisabled(true);
+                }
+                dtos.add(dto);
+            }
+        }
+        return dtos;
     }
 
     @Override

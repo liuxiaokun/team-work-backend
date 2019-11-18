@@ -1,6 +1,7 @@
 package com.byx.work.team.service;
 
 import com.byx.work.team.exception.BizException;
+import com.byx.work.team.model.dto.ProjectCascadeDTO;
 import com.byx.work.team.model.dto.ProjectDTO;
 import com.byx.work.team.model.entity.Project;
 import com.byx.framework.core.domain.PagingContext;
@@ -90,6 +91,8 @@ public interface ProjectService {
      * @return 查询结果的数据集合。
      */
     List<ProjectDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
+
+    List<ProjectCascadeDTO> find(Map<String, Object> params);
 
     /**
      * 根据查询条件得到指定字段集合的数据列表，包含分页和排序信息。

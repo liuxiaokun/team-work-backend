@@ -7,6 +7,7 @@
     <resultMap type="com.byx.work.team.model.entity.BugState" id="BugStateMap">
         <id property="id" column="id" jdbcType="BIGINT" />
         <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="priority" column="priority" jdbcType="INTEGER" />
         <result property="remark" column="remark" jdbcType="VARCHAR" />
         <result property="enabled" column="enabled" jdbcType="INTEGER" />
         <result property="createdDate" column="created_date" jdbcType="BIGINT" />
@@ -20,6 +21,7 @@
     <sql id="Base_Column_List">
       `id`,
             `name`,
+            `priority`,
             `remark`,
             `enabled`,
             `created_date`,
@@ -36,6 +38,7 @@
         )VALUES(
             #{id},
             #{name},
+            #{priority},
             #{remark},
             #{enabled},
             #{createdDate},
@@ -58,6 +61,7 @@
         (
             #{data.id},
             #{data.name},
+            #{data.priority},
             #{data.remark},
             #{data.enabled},
             #{data.createdDate},
@@ -77,7 +81,8 @@
         <![CDATA[
             UPDATE t_bug_state SET
                 `name`=#{name}, 
-                `remark`=#{remark}, 
+                `priority`=#{priority},
+                `remark`=#{remark},
                 `enabled`=#{enabled}, 
                 `ip`=#{ip}, 
                 `modified_by`=#{modifiedBy},
@@ -169,6 +174,9 @@
             <if test="name != null">
                 AND `name` = #{name}
             </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
+            </if>
             <if test="remark != null">
                 AND `remark` = #{remark}
             </if>
@@ -198,6 +206,9 @@
             </choose>
             <if test="id != null">
                 AND id = #{id}
+            </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
             </if>
             <if test="name != null">
                 AND `name` = #{name}
@@ -229,6 +240,9 @@
             </choose>
             <if test="id != null">
                 AND id = #{id}
+            </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
             </if>
             <if test="name != null">
                 AND `name` = #{name}
@@ -264,6 +278,9 @@
             </if>
             <if test="name != null">
                 AND `name` = #{name}
+            </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
             </if>
             <if test="remark != null">
                 AND `remark` = #{remark}
@@ -313,6 +330,9 @@
             <if test="name != null">
                 AND `name` = #{name}
             </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
+            </if>
             <if test="remark != null">
                 AND `remark` = #{remark}
             </if>
@@ -358,6 +378,9 @@
             <if test="name != null">
                 AND `name` = #{name}
             </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
+            </if>
             <if test="remark != null">
                 AND `remark` = #{remark}
             </if>
@@ -393,6 +416,9 @@
             <if test="name != null">
                 AND `name` = #{name}
             </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
+            </if>
             <if test="remark != null">
                 AND `remark` = #{remark}
             </if>
@@ -422,6 +448,9 @@
             </choose>
             <if test="id != null">
                 AND id = #{id}
+            </if>
+            <if test="priority != null">
+                AND `priority` = #{priority}
             </if>
             <if test="name != null">
                 AND `name` = #{name}

@@ -24,6 +24,9 @@ public class BugStateDTO extends BaseDTO implements Serializable {
     @ApiModelProperty(value = "名字", name = "name")
     private String name;
 
+    @ApiModelProperty(value = "优先级", name = "priority")
+    private Integer priority;
+
     @ApiModelProperty(value = "备注", name = "remark")
     private String remark;
 

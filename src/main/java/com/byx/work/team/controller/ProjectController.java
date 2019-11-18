@@ -2,6 +2,7 @@ package com.byx.work.team.controller;
 
 import com.byx.work.team.controller.BaseController;
 import com.byx.work.team.exception.BizException;
+import com.byx.work.team.model.dto.ProjectCascadeDTO;
 import com.byx.work.team.model.dto.ProjectDTO;
 import com.byx.work.team.model.entity.Project;
 import com.byx.work.team.service.ProjectService;
@@ -57,6 +58,15 @@ public class ProjectController extends BaseController<Project> {
             list = projectService.find(params, scs, pc);
         }
         return RO.success(list, pc, scs);
+    }
+
+    @GetMapping(name = "team-Project管理", value = "cascade")
+    public Object cascade(HttpServletRequest request, ProjectDTO projectDTO) {
+        log.info("cascade:{}", projectDTO);
+
+        Map<String, Object> params = getConditionsMap(request);
+        List<ProjectCascadeDTO> projectCascadeDTOS = projectService.find(params);
+        return RO.success(projectCascadeDTOS);
     }
 
     @ApiOperation(value = "查询Project", notes = "根据ID查询Project")

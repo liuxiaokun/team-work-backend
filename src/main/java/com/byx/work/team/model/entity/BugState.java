@@ -1,14 +1,10 @@
 package com.byx.work.team.model.entity;
 
-import com.byx.work.team.model.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.sql.Time;
-import java.math.BigDecimal;
 
 /**
  * @author liuxiaokun
@@ -24,6 +20,11 @@ public class BugState extends BaseEntity implements Serializable {
      * 名字
      */
     private String name;
+
+    /**
+     * 优先级
+     */
+    private Integer priority;
 
     /**
      * 备注
