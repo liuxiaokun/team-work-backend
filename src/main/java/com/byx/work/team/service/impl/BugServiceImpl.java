@@ -1,12 +1,15 @@
 package com.byx.work.team.service.impl;
 
 import com.byx.work.team.dao.BugDAO;
+import com.byx.work.team.dao.BugStateDAO;
+import com.byx.work.team.dao.FunctionDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.BugDTO;
 import com.byx.work.team.model.entity.Bug;
 import com.byx.work.team.service.BugService;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
+import com.byx.work.team.service.FunctionService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -28,15 +31,22 @@ import java.util.stream.Collectors;
 public class BugServiceImpl implements BugService {
 
     private final BugDAO bugDAO;
+    private final BugStateDAO bugStateDAO;
+    private final FunctionDAO functionDAO;
 
     @Autowired
-    public BugServiceImpl(BugDAO bugDAO) {
+    public BugServiceImpl(BugDAO bugDAO, BugStateDAO bugStateDAO, FunctionDAO functionDAO) {
         this.bugDAO = bugDAO;
+        this.bugStateDAO = bugStateDAO;
+        this.functionDAO = functionDAO;
     }
 
     @Override
     public void saveBug(@NonNull Bug bug) throws BizException {
         log.info("save Bug:{}", bug);
+        Map<String, Object> stateParams = new HashMap<>(1);
+        stateParams.put("id", bug.getCurrentStateId());
+        bug.setCurrentStateName(bugStateDAO.selectOne(stateParams).getName());
         if (bugDAO.insert(bug) != 1) {
             log.error("insert error, data:{}", bug);
             throw new BizException("Insert Bug Error!");
@@ -125,6 +135,9 @@ public class BugServiceImpl implements BugService {
         BugDTO bugDTO = new BugDTO();
         if (null != bug) {
             BeanUtils.copyProperties(bug, bugDTO);
+            Map<String, Object> functionParams = new HashMap<>(1);
+            functionParams.put("id", bug.getFunctionId());
+            bugDTO.setFunctionName(functionDAO.selectOne(functionParams).getName());
         }
         return bugDTO;
     }
@@ -145,6 +158,9 @@ public class BugServiceImpl implements BugService {
         bugList.forEach(tem -> {
             BugDTO bugDTO = new BugDTO();
             BeanUtils.copyProperties(tem, bugDTO);
+            Map<String, Object> functionParams = new HashMap<>(1);
+            functionParams.put("id", bugDTO.getFunctionId());
+            bugDTO.setFunctionName(functionDAO.selectOne(functionParams).getName());
             resultList.add(bugDTO);
         });
 

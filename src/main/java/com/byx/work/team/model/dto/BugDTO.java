@@ -21,8 +21,11 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BugDTO extends BaseDTO implements Serializable {
 
-    @ApiModelProperty(value = "", name = "functionId")
+    @ApiModelProperty(value = "需求ID", name = "functionId")
     private Long functionId;
+
+    @ApiModelProperty(value = "需求名称", name = "functionName")
+    private String functionName;
 
     @ApiModelProperty(value = "归属人", name = "owner")
     private Long owner;
