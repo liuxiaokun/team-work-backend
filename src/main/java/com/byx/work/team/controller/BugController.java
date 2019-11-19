@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/28
+ * @since 2019/11/18
  */
 @RestController
 @RequestMapping(value = "/bug", name = "Bug")
@@ -44,7 +44,7 @@ public class BugController extends BaseController<Bug> {
             @ApiImplicitParam(name = "p", value = "请求的页码", paramType = "query"),
             @ApiImplicitParam(name = "sc", value = "排序字段，格式：scs=name(asc),sc=age(desc),有序", paramType = "query"),
             })
-    @GetMapping(name = "team-Bug管理")
+    @GetMapping(name = "work-Bug管理")
     public Object list(HttpServletRequest request, BugDTO bugDTO) {
         log.info("list:{}", bugDTO);
 

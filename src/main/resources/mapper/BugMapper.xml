@@ -10,9 +10,11 @@
         <result property="owner" column="owner" jdbcType="BIGINT" />
         <result property="title" column="title" jdbcType="VARCHAR" />
         <result property="desc" column="desc" jdbcType="VARCHAR" />
+        <result property="currentStateId" column="currentStateId" jdbcType="BIGINT" />
+        <result property="currentStateName" column="currentStateName" jdbcType="VARCHAR" />
         <result property="fixStartTime" column="fix_start_time" jdbcType="BIGINT" />
-        <result property="fixDeadline" column="fix_deadline" jdbcType="BIGINT" />
-        <result property="testDeadline" column="test_deadline" jdbcType="BIGINT" />
+        <result property="testStartTime" column="test_start_time" jdbcType="BIGINT" />
+        <result property="deployStartTime" column="deploy_start_time" jdbcType="BIGINT" />
         <result property="deadline" column="deadline" jdbcType="BIGINT" />
         <result property="createdDate" column="created_date" jdbcType="BIGINT" />
         <result property="createdBy" column="created_by" jdbcType="BIGINT" />
@@ -28,9 +30,11 @@
             `owner`,
             `title`,
             `desc`,
+            `currentStateId`,
+            `currentStateName`,
             `fix_start_time`,
-            `fix_deadline`,
-            `test_deadline`,
+            `test_start_time`,
+            `deploy_start_time`,
             `deadline`,
             `created_date`,
             `created_by`,
@@ -49,9 +53,11 @@
             #{owner},
             #{title},
             #{desc},
+            #{currentStateId},
+            #{currentStateName},
             #{fixStartTime},
-            #{fixDeadline},
-            #{testDeadline},
+            #{testStartTime},
+            #{deployStartTime},
             #{deadline},
             #{createdDate},
             #{createdBy},
@@ -76,9 +82,11 @@
             #{data.owner},
             #{data.title},
             #{data.desc},
+            #{data.currentStateId},
+            #{data.currentStateName},
             #{data.fixStartTime},
-            #{data.fixDeadline},
-            #{data.testDeadline},
+            #{data.testStartTime},
+            #{data.deployStartTime},
             #{data.deadline},
             #{data.createdDate},
             #{data.createdBy},
@@ -100,9 +108,11 @@
                 `owner`=#{owner}, 
                 `title`=#{title}, 
                 `desc`=#{desc}, 
+                `currentStateId`=#{currentStateId}, 
+                `currentStateName`=#{currentStateName}, 
                 `fix_start_time`=#{fixStartTime}, 
-                `fix_deadline`=#{fixDeadline}, 
-                `test_deadline`=#{testDeadline}, 
+                `test_start_time`=#{testStartTime}, 
+                `deploy_start_time`=#{deployStartTime}, 
                 `deadline`=#{deadline}, 
                 `ip`=#{ip}, 
                 `modified_by`=#{modifiedBy},
@@ -170,14 +180,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -218,14 +234,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -266,14 +288,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -312,14 +340,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -359,14 +393,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -422,14 +462,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -482,14 +528,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -532,14 +584,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -580,14 +638,20 @@
             <if test="desc != null">
                 AND `desc` = #{desc}
             </if>
+            <if test="currentStateId != null">
+                AND `currentStateId` = #{currentStateId}
+            </if>
+            <if test="currentStateName != null">
+                AND `currentStateName` = #{currentStateName}
+            </if>
             <if test="fixStartTime != null">
                 AND `fix_start_time` = #{fixStartTime}
             </if>
-            <if test="fixDeadline != null">
-                AND `fix_deadline` = #{fixDeadline}
+            <if test="testStartTime != null">
+                AND `test_start_time` = #{testStartTime}
             </if>
-            <if test="testDeadline != null">
-                AND `test_deadline` = #{testDeadline}
+            <if test="deployStartTime != null">
+                AND `deploy_start_time` = #{deployStartTime}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}

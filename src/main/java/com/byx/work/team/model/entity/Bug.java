@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/28
+ * @since 2019/11/18
  */
 @Data
 @ToString(callSuper = true)
@@ -41,19 +41,29 @@ public class Bug extends BaseEntity implements Serializable {
     private String desc;
 
     /**
+     * 
+     */
+    private Long currentStateId;
+
+    /**
+     * 
+     */
+    private String currentStateName;
+
+    /**
      * 开始修复时间
      */
     private Long fixStartTime;
 
     /**
-     * 修复结束时间
+     * 测试开始时间
      */
-    private Long fixDeadline;
+    private Long testStartTime;
 
     /**
-     * 
+     * 部署开始时间
      */
-    private Long testDeadline;
+    private Long deployStartTime;
 
     /**
      * 修复上线日期

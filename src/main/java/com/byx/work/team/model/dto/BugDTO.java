@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/28
+ * @since 2019/11/18
  */
 @ApiModel("Bug")
 @Data
@@ -33,14 +33,20 @@ public class BugDTO extends BaseDTO implements Serializable {
     @ApiModelProperty(value = "", name = "desc")
     private String desc;
 
+    @ApiModelProperty(value = "", name = "currentStateId")
+    private Long currentStateId;
+
+    @ApiModelProperty(value = "", name = "currentStateName")
+    private String currentStateName;
+
     @ApiModelProperty(value = "开始修复时间", name = "fixStartTime")
     private Long fixStartTime;
 
-    @ApiModelProperty(value = "修复结束时间", name = "fixDeadline")
-    private Long fixDeadline;
+    @ApiModelProperty(value = "测试开始时间", name = "testStartTime")
+    private Long testStartTime;
 
-    @ApiModelProperty(value = "", name = "testDeadline")
-    private Long testDeadline;
+    @ApiModelProperty(value = "部署开始时间", name = "deployStartTime")
+    private Long deployStartTime;
 
     @ApiModelProperty(value = "修复上线日期", name = "deadline")
     private Long deadline;

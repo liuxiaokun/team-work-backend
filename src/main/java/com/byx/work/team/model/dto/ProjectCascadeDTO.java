@@ -1,5 +1,6 @@
 package com.byx.work.team.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.List;
  * @since 2019/10/28
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectCascadeDTO implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
@@ -20,7 +22,7 @@ public class ProjectCascadeDTO implements Serializable {
 
     private String label;
 
-    private boolean disabled;
+    private Boolean disabled;
 
     private List<ProjectCascadeDTO> children;
 }

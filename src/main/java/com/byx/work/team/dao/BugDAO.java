@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * @author liuxiaokun
  * @version 0.0.1
- * @since 2019/10/28
+ * @since 2019/11/18
  */
 @Mapper
 public interface BugDAO extends BaseDAO<Bug> {
