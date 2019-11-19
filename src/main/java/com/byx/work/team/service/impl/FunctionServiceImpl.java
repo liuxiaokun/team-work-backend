@@ -297,6 +297,19 @@ public class FunctionServiceImpl implements FunctionService {
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
 
+            // Fill current state handling person
+            Map<String, Object> queryParams = new HashMap<>(2);
+            queryParams.put("functionId", tem.getId());
+            queryParams.put("functionStateId", tem.getCurrentStateId());
+            FunctionStateHistory functionStateHistory = functionStateHistoryDAO.selectOne(queryParams);
+
+            if (null != functionStateHistory) {
+                queryParams.clear();
+                queryParams.put("id", functionStateHistory.getAssigner());
+                User user = userDAO.selectOne(queryParams);
+                functionDTO.setCurrentHandlePersonName(null == user ? "" : user.getName());
+            }
+
             calcTimeCostPercent(functionDTO);
             resultList.add(functionDTO);
         });

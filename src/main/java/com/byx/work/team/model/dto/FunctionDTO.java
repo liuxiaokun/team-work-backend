@@ -43,6 +43,9 @@ public class FunctionDTO extends BaseDTO implements Serializable {
     @ApiModelProperty(value = "当前任务状态", name = "currentStateName")
     private String currentStateName;
 
+    @ApiModelProperty(value = "当前处理人姓名", name = "currentAssignerName")
+    private String currentHandlePersonName;
+
     private String currentHandlePerson;
 
     @ApiModelProperty(value = "开发开始时间", name = "devStartTime")
