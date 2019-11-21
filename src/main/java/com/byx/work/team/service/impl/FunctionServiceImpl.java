@@ -310,12 +310,12 @@ public class FunctionServiceImpl implements FunctionService {
                     if (!assignerId.toString().equals(assigner)) {
                         iterator.remove();
                         continue;
-                    } else {
-                        queryParams.clear();
-                        queryParams.put("id", assignerId);
-                        User user = userDAO.selectOne(queryParams);
-                        functionDTO.setCurrentHandlePersonName(null == user ? "" : user.getName());
                     }
+                } else {
+                    queryParams.clear();
+                    queryParams.put("id", assignerId);
+                    User user = userDAO.selectOne(queryParams);
+                    functionDTO.setCurrentHandlePersonName(null == user ? "" : user.getName());
                 }
             }
             calcTimeCostPercent(functionDTO);
