@@ -173,12 +173,8 @@ public class ProjectServiceImpl implements ProjectService {
             condition.put("currentStateId", functionStates.get(0).getId());
             int completeCount = functionDAO.count(condition);
 
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            // 设置精确到小数点后2位
-            numberFormat.setMaximumFractionDigits(2);
-            String result = count == 0 ? "0" : numberFormat.format((float) completeCount / (float) count * 100);
-
-            projectDTO.setCompletePercent(Integer.valueOf(result));
+            projectDTO.setCompletePercent(count == 0 ? 0 :new BigDecimal(completeCount).divide(new BigDecimal(count), 2, BigDecimal.ROUND_HALF_UP)
+                    .multiply(new BigDecimal(100)).intValue());
             resultList.add(projectDTO);
         });
 
