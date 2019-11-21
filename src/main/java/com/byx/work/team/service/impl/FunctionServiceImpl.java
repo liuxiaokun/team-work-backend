@@ -125,7 +125,7 @@ public class FunctionServiceImpl implements FunctionService {
         dataMap.remove("assigner");
         functionDAO.updatex(params);
 
-        if(dataMap.containsKey("current_state_id")) {
+        if (dataMap.containsKey("current_state_id")) {
 
             FunctionStateHistory functionStateHistory = new FunctionStateHistory();
             functionStateHistory.setId(AppContext.IdGen.nextId());
@@ -287,7 +287,10 @@ public class FunctionServiceImpl implements FunctionService {
         params.put("scs", scs);
         List<Function> functionList = functionDAO.select(params);
         List<FunctionDTO> resultList = new ArrayList<>();
-        functionList.forEach(tem -> {
+        Iterator<Function> iterator = functionList.iterator();
+
+        while (iterator.hasNext()) {
+            Function tem = iterator.next();
             FunctionDTO functionDTO = new FunctionDTO();
             BeanUtils.copyProperties(tem, functionDTO);
             Map<String, Object> projectParam = new HashMap<>(1);
@@ -301,16 +304,23 @@ public class FunctionServiceImpl implements FunctionService {
             FunctionStateHistory functionStateHistory = functionStateHistoryDAO.selectOne(queryParams);
 
             if (null != functionStateHistory) {
-                queryParams.clear();
-                queryParams.put("id", functionStateHistory.getAssigner());
-                User user = userDAO.selectOne(queryParams);
-                functionDTO.setCurrentHandlePersonName(null == user ? "" : user.getName());
+                Long assignerId = functionStateHistory.getAssigner();
+                Object assigner = params.get("assigner");
+                if (null != assigner && assigner.toString().length() > 0) {
+                    if (!assignerId.toString().equals(assigner)) {
+                        iterator.remove();
+                        continue;
+                    } else {
+                        queryParams.clear();
+                        queryParams.put("id", assignerId);
+                        User user = userDAO.selectOne(queryParams);
+                        functionDTO.setCurrentHandlePersonName(null == user ? "" : user.getName());
+                    }
+                }
             }
-
             calcTimeCostPercent(functionDTO);
             resultList.add(functionDTO);
-        });
-
+        }
         return resultList;
     }
 

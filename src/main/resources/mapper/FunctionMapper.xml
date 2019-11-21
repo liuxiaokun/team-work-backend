@@ -269,7 +269,7 @@
                 AND `project_id` = #{projectId}
             </if>
             <if test="name != null">
-                AND `name` = #{name}
+                AND `name` LIKE CONCAT('%', #{name},'%')
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
@@ -318,7 +318,7 @@
                 AND `project_id` = #{projectId}
             </if>
             <if test="name != null">
-                AND `name` = #{name}
+                AND `name` LIKE CONCAT('%', #{name},'%')
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
@@ -368,7 +368,7 @@
                 AND `project_id` = #{projectId}
             </if>
             <if test="name != null">
-                AND `name` = #{name}
+                AND `name` LIKE CONCAT('%', #{name},'%')
             </if>
             <if test="desc != null">
                 AND `desc` = #{desc}
