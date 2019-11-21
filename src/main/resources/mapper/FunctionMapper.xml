@@ -307,10 +307,6 @@
     <select id="selectOne" parameterType="Map" resultMap="FunctionMap">
         SELECT <include refid="Base_Column_List" /> FROM t_function
         <trim prefix="WHERE" prefixOverrides="AND|OR">
-            <choose>
-                <when test="status !=null ">status = #{status}</when>
-                <otherwise><![CDATA[status > 0]]></otherwise>
-            </choose>
             <if test="id != null">
                 AND id = #{id}
             </if>
