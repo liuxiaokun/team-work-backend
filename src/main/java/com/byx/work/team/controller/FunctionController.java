@@ -72,15 +72,17 @@ public class FunctionController extends BaseController<Function> {
     @PostMapping(name = "创建")
     public Object create(@RequestBody FunctionDTO functionDTO, HttpServletRequest request) {
         log.info("add function DTO:{}", functionDTO);
-        Function sourceFunction = new Function();
+        Function function;
         try {
-            Function function = BeanUtil.copyProperties(functionDTO, sourceFunction);
+            Function sourceFunction = new Function();
+            function = BeanUtil.copyProperties(functionDTO, sourceFunction);
             functionService.saveFunction(this.packAddBaseProps(function, request));
         } catch (BizException e) {
             log.error("add function failed,  functionDTO: {}, error message:{}", functionDTO, e.getMessage());
             return RO.error(e.getMessage());
         }
-        return RO.success();
+        functionDTO.setId(function.getId());
+        return RO.success(functionDTO);
     }
 
     @ApiOperation(value = "修改Function", notes = "根据ID, 修改一条Function记录")
