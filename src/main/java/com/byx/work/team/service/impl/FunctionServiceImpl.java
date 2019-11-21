@@ -243,9 +243,6 @@ public class FunctionServiceImpl implements FunctionService {
         if (now > deadline) {
             result = 100;
         } else if (now > devStartTime) {
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            numberFormat.setMaximumFractionDigits(2);
-
             BigDecimal usedTime = new BigDecimal(now - devStartTime);
             BigDecimal allTime = new BigDecimal(deadline - devStartTime);
             result = usedTime.divide(allTime, 2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).intValue();
