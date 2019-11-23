@@ -50,6 +50,9 @@ public class FunctionController extends BaseController<Function> {
         log.info("list:{}", functionDTO);
 
         Map<String, Object> params = getConditionsMap(request);
+        if (null != params.get("onlyMe") && Boolean.TRUE.equals(Boolean.valueOf(params.get("onlyMe").toString()))) {
+            params.put("assigner", getUserId(request).toString());
+        }
         List<FunctionDTO> list = new ArrayList<>();
         int total = functionService.count(params);
         PagingContext pc = getPagingContext(request, total);
