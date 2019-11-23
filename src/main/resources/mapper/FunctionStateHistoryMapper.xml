@@ -265,6 +265,9 @@
             <if test="functionId != null">
                 AND `function_id` = #{functionId}
             </if>
+            <if test="myId != null">
+                AND (`assigner` = #{myId} OR `created_by` = #{myId})
+            </if>
             <if test="functionStateId != null">
                 AND `function_state_id` = #{functionStateId}
             </if>

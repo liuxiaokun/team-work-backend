@@ -49,6 +49,10 @@ public class FunctionStateHistoryController extends BaseController<FunctionState
         log.info("list:{}", functionStateHistoryDTO);
 
         Map<String, Object> params = getConditionsMap(request);
+
+        if (null != params.get("onlyMe") && Boolean.TRUE.equals(Boolean.valueOf(params.get("onlyMe").toString()))) {
+            params.put("myId", getUserId(request));
+        }
         List<FunctionStateHistoryDTO> list = new ArrayList<>();
         int total = functionStateHistoryService.count(params);
         PagingContext pc = getPagingContext(request, total);
