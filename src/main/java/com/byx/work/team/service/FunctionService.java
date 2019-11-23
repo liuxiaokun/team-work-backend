@@ -93,6 +93,16 @@ public interface FunctionService {
     List<FunctionDTO> find(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
 
     /**
+     * 根据查询条件得到数据列表，包含分页和排序信息。
+     *
+     * @param params 查询条件。
+     * @param scs 排序信息。
+     * @param pc 分页信息。
+     * @return 查询结果的数据集合。
+     */
+    List<FunctionDTO> findAll(Map<String, Object> params, Vector<SortingContext> scs, PagingContext pc);
+
+    /**
      * 根据查询条件得到指定字段集合的数据列表，包含分页和排序信息。
      *
      * @param params 查询条件。
@@ -112,6 +122,7 @@ public interface FunctionService {
      * @return 统计结果。
      */
     int count(Map<String, Object> params);
+    int countAll(Map<String, Object> params);
 
     /**
      * 根据给定字段以及查询条件进行分组查询，并统计id的count。

@@ -54,11 +54,11 @@ public class FunctionController extends BaseController<Function> {
             params.put("assigner", getUserId(request).toString());
         }
         List<FunctionDTO> list = new ArrayList<>();
-        int total = functionService.count(params);
+        int total = functionService.countAll(params);
         PagingContext pc = getPagingContext(request, total);
         Vector<SortingContext> scs = getSortingContext(request);
         if (total > 0) {
-            list = functionService.find(params, scs, pc);
+            list = functionService.findAll(params, scs, pc);
         }
         return RO.success(list, pc, scs);
     }

@@ -288,38 +288,38 @@ public class FunctionServiceImpl implements FunctionService {
         params.put("scs", scs);
         List<Function> functionList = functionDAO.select(params);
         List<FunctionDTO> resultList = new ArrayList<>();
-        Iterator<Function> iterator = functionList.iterator();
-
-        while (iterator.hasNext()) {
-            Function tem = iterator.next();
+        functionList.forEach(tem -> {
             FunctionDTO functionDTO = new FunctionDTO();
             BeanUtils.copyProperties(tem, functionDTO);
+            resultList.add(functionDTO);
+        });
+
+        return resultList;
+    }
+
+    @Override
+    public List<FunctionDTO> findAll(Map<String, Object> params,
+                                  Vector<SortingContext> scs, PagingContext pc) {
+
+        if (params.size() > 0) {
+            params = params.entrySet().stream().filter(entry ->
+                    (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+        params.put("pc", pc);
+        params.put("scs", scs);
+        List<FunctionDTO> resultList = functionDAO.selectAll(params);
+
+        for (FunctionDTO functionDTO : resultList) {
             Map<String, Object> projectParam = new HashMap<>(1);
             projectParam.put("id", functionDTO.getProjectId());
             functionDTO.setProjectName(projectDAO.selectOne(projectParam).getName());
 
-            // Fill current state handling person
             Map<String, Object> queryParams = new HashMap<>(2);
-            queryParams.put("functionId", tem.getId());
-            queryParams.put("functionStateId", tem.getCurrentStateId());
-            FunctionStateHistory functionStateHistory = functionStateHistoryDAO.selectOne(queryParams);
-
-            if (null != functionStateHistory) {
-                Long assignerId = functionStateHistory.getAssigner();
-                Object assigner = params.get("assigner");
-                if (null != assigner && assigner.toString().length() > 0) {
-                    if (!assignerId.toString().equals(assigner)) {
-                        iterator.remove();
-                        continue;
-                    }
-                }
-                queryParams.clear();
-                queryParams.put("id", assignerId);
-                User user = userDAO.selectOne(queryParams);
-                functionDTO.setCurrentHandlePersonName(null == user ? "" : user.getName());
-            }
+            queryParams.put("id", functionDTO.getAssigner());
+            User user = userDAO.selectOne(queryParams);
+            functionDTO.setCurrentHandlePersonName(null == user ? "" : user.getName());
             calcTimeCostPercent(functionDTO);
-            resultList.add(functionDTO);
         }
         return resultList;
     }
@@ -350,6 +350,16 @@ public class FunctionServiceImpl implements FunctionService {
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
         return functionDAO.count(params);
+    }
+
+    @Override
+    public int countAll(Map<String, Object> params) {
+        if (params.size() > 0) {
+            params = params.entrySet().stream().filter(entry ->
+                    (StringUtils.hasLength(entry.getKey()) && null != entry.getValue()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+        return functionDAO.countAll(params);
     }
 
     @Override

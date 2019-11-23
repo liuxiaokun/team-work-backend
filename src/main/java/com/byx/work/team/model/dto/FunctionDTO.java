@@ -48,6 +48,8 @@ public class FunctionDTO extends BaseDTO implements Serializable {
 
     private String currentHandlePerson;
 
+    private Long assigner;
+
     @ApiModelProperty(value = "开发开始时间", name = "devStartTime")
     private Long devStartTime;
 

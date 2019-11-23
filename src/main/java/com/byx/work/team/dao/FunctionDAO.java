@@ -1,6 +1,7 @@
 package com.byx.work.team.dao;
 
 import com.byx.work.team.model.dto.CommDTO;
+import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
 import com.byx.work.team.dao.BaseDAO;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,4 +18,9 @@ import java.util.Map;
 public interface FunctionDAO extends BaseDAO<Function> {
 
     List<CommDTO> statStateCount(Map<String, Object> params);
+
+    List<FunctionDTO> selectAll(Map<String, Object> params);
+
+    int countAll(Map<String, Object> params);
+
 }
