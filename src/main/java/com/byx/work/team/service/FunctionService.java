@@ -1,6 +1,7 @@
 package com.byx.work.team.service;
 
 import com.byx.work.team.exception.BizException;
+import com.byx.work.team.model.dto.CommDTO;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
 import com.byx.framework.core.domain.PagingContext;
@@ -139,4 +140,7 @@ public interface FunctionService {
      * @return 查询结果 key为查询字段的值，value为查询字段的求和。
      */
     Map<String, Double> groupSum(String group, String sumField, Map<String, Object> conditions);
+
+
+    List<CommDTO> statStateCount(Map<String, Object> params);
 }

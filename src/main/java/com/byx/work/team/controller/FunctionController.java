@@ -1,6 +1,7 @@
 package com.byx.work.team.controller;
 
 import com.byx.work.team.controller.BaseController;
+import com.byx.work.team.dao.FunctionDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
@@ -156,5 +157,12 @@ public class FunctionController extends BaseController<Function> {
         Map<String, Object> params = getConditionsMap(request);
         Map<String, Integer> result = functionService.groupCount(groupField, params);
         return RO.success(result);
+    }
+
+    @GetMapping(value = "/stat/state", name = "需求状态分布")
+    public Object statState(@RequestParam(required = false) String projectId, HttpServletRequest request) {
+        log.info("projectId:{}", projectId);
+        Map<String, Object> params = getConditionsMap(request);
+        return RO.success(functionService.statStateCount(params));
     }
 }

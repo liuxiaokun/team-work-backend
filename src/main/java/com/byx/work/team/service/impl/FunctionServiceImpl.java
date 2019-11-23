@@ -3,6 +3,7 @@ package com.byx.work.team.service.impl;
 import com.byx.framework.core.context.AppContext;
 import com.byx.work.team.dao.*;
 import com.byx.work.team.exception.BizException;
+import com.byx.work.team.model.dto.CommDTO;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
 import com.byx.work.team.model.entity.FunctionState;
@@ -399,5 +400,10 @@ public class FunctionServiceImpl implements FunctionService {
             map.put(key, sum);
         }
         return map;
+    }
+
+    @Override
+    public List<CommDTO> statStateCount(Map<String, Object> params) {
+        return functionDAO.statStateCount(params);
     }
 }

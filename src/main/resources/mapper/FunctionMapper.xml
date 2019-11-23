@@ -633,4 +633,13 @@
         GROUP BY `group` 
         ORDER BY `group` ASC
     </select>
+
+    <select id="statStateCount" parameterType="java.util.Map" resultType="com.byx.work.team.model.dto.CommDTO">
+        SELECT count(fs.name) AS `value`, fs.name AS `name` FROM t_function func RIGHT OUTER JOIN t_function_state fs ON func.current_state_id = fs.id
+        WHERE func.status > 0 AND fs.status > 0
+        <if test="projectId != null">
+            AND func.project_id = #{projectId}
+        </if>
+        GROUP BY fs.name
+    </select>
 </mapper>
