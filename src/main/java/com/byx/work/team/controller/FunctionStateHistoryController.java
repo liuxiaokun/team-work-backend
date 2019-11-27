@@ -1,6 +1,7 @@
 package com.byx.work.team.controller;
 
 import com.byx.work.team.controller.BaseController;
+import com.byx.work.team.dao.RoleDAO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionStateHistoryDTO;
 import com.byx.work.team.model.entity.FunctionStateHistory;
@@ -32,10 +33,12 @@ import java.util.*;
 public class FunctionStateHistoryController extends BaseController<FunctionStateHistory> {
 
     private final FunctionStateHistoryService functionStateHistoryService;
+    private final RoleDAO roleDAO;
 
     @Autowired
-    public FunctionStateHistoryController(FunctionStateHistoryService functionStateHistoryService) {
+    public FunctionStateHistoryController(FunctionStateHistoryService functionStateHistoryService, RoleDAO roleDAO) {
         this.functionStateHistoryService = functionStateHistoryService;
+        this.roleDAO = roleDAO;
     }
 
     @ApiOperation(value = "根据条件查询FunctionStateHistory列表", notes = "包含查询条件，分页以及排序功能")
@@ -43,7 +46,7 @@ public class FunctionStateHistoryController extends BaseController<FunctionState
             @ApiImplicitParam(name = "s", value = "每页的条数", paramType = "query"),
             @ApiImplicitParam(name = "p", value = "请求的页码", paramType = "query"),
             @ApiImplicitParam(name = "sc", value = "排序字段，格式：scs=name(asc),sc=age(desc),有序", paramType = "query"),
-            })
+    })
     @GetMapping(name = "team-FunctionStateHistory管理")
     public Object list(HttpServletRequest request, FunctionStateHistoryDTO functionStateHistoryDTO) {
         log.info("list:{}", functionStateHistoryDTO);
@@ -158,5 +161,13 @@ public class FunctionStateHistoryController extends BaseController<FunctionState
         Map<String, Object> params = getConditionsMap(request);
         Map<String, Integer> result = functionStateHistoryService.groupCount(groupField, params);
         return RO.success(result);
+    }
+
+    @GetMapping(value = "/permission/{currentHandlingPerson}", name = "是否有操作权限")
+    public Object permission(HttpServletRequest request, @PathVariable Long currentHandlingPerson) {
+        log.info("currentHandlingPersonId:{}", currentHandlingPerson);
+        Long currentUserId = getUserId(request);
+        List<String> roleNames = roleDAO.selectRoleNamesByUserId(currentUserId);
+        return RO.success(currentHandlingPerson.equals(currentUserId) || roleNames.contains("管理员"));
     }
 }

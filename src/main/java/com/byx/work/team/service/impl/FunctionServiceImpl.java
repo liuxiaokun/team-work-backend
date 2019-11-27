@@ -192,6 +192,7 @@ public class FunctionServiceImpl implements FunctionService {
                     Map<String, Object> userParams = new HashMap<>(1);
                     userParams.put("id", functionStateHistory.getAssigner());
                     User assigner = userDAO.selectOne(userParams);
+                    functionDTO.setCurrentHandlePersonId(assigner.getId());
                     functionDTO.setCurrentHandlePerson(assigner.getName());
                 }
             }

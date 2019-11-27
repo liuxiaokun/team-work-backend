@@ -47,6 +47,7 @@ public class FunctionDTO extends BaseDTO implements Serializable {
     private String currentHandlePersonName;
 
     private String currentHandlePerson;
+    private Long currentHandlePersonId;
 
     private Long assigner;
 
