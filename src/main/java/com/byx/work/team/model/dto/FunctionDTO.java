@@ -47,7 +47,12 @@ public class FunctionDTO extends BaseDTO implements Serializable {
     private String currentHandlePersonName;
 
     private String currentHandlePerson;
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long currentHandlePersonId;
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long currentStateHistoryId;
 
     private Long assigner;
 
