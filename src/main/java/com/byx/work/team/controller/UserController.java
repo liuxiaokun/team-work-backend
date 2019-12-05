@@ -1,13 +1,13 @@
 package com.byx.work.team.controller;
 
+import com.byx.framework.core.domain.PagingContext;
+import com.byx.framework.core.domain.SortingContext;
+import com.byx.framework.core.web.RO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.UserDTO;
 import com.byx.work.team.model.entity.User;
 import com.byx.work.team.service.UsersService;
 import com.byx.work.team.utils.BeanUtil;
-import com.byx.framework.core.domain.PagingContext;
-import com.byx.framework.core.domain.SortingContext;
-import com.byx.framework.core.web.RO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -64,6 +64,12 @@ public class UserController extends BaseController<User> {
     public Object view(@PathVariable("id") Long id) {
         log.info("get users Id:{}", id);
         UserDTO usersDTO = usersService.findUsersById(id);
+        return RO.success(usersDTO);
+    }
+
+    @GetMapping(value = "/info", name = "查看")
+    public Object getUserInfo(HttpServletRequest request) {
+        UserDTO usersDTO = usersService.findUsersById(getUserId(request));
         return RO.success(usersDTO);
     }
 

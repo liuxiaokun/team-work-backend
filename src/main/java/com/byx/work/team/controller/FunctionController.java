@@ -1,15 +1,13 @@
 package com.byx.work.team.controller;
 
-import com.byx.work.team.controller.BaseController;
-import com.byx.work.team.dao.FunctionDAO;
+import com.byx.framework.core.domain.PagingContext;
+import com.byx.framework.core.domain.SortingContext;
+import com.byx.framework.core.web.RO;
 import com.byx.work.team.exception.BizException;
 import com.byx.work.team.model.dto.FunctionDTO;
 import com.byx.work.team.model.entity.Function;
 import com.byx.work.team.service.FunctionService;
 import com.byx.work.team.utils.BeanUtil;
-import com.byx.framework.core.domain.PagingContext;
-import com.byx.framework.core.domain.SortingContext;
-import com.byx.framework.core.web.RO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -102,7 +100,7 @@ public class FunctionController extends BaseController<Function> {
 
     @ApiOperation(value = "修改Function", notes = "根据ID, 部分修改一条Function记录")
     @ApiImplicitParam(name = "id", value = "主键ID", dataType = "Long", paramType = "path", required = true, example = "947153698855845888")
-    @PatchMapping(value = "/{id}", name = "修改指定项")
+    @RequestMapping(value = "/{id}", name = "修改指定项", method = {RequestMethod.PATCH, RequestMethod.POST})
     public Object updatex(@PathVariable("id") Long id, HttpServletRequest request, @RequestBody Map<String, Object> params) {
         log.info("Patch modify Function Id:{}", id);
         params.put("modified_by", getUserId(request));
