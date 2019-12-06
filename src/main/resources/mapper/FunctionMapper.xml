@@ -12,8 +12,11 @@
         <result property="currentStateId" column="current_state_id" jdbcType="BIGINT" />
         <result property="currentStateName" column="current_state_name" jdbcType="VARCHAR" />
         <result property="devStartTime" column="dev_start_time" jdbcType="BIGINT" />
+        <result property="devPerson" column="dev_person" jdbcType="BIGINT" />
         <result property="testStartTime" column="test_start_time" jdbcType="BIGINT" />
+        <result property="testPerson" column="test_person" jdbcType="BIGINT" />
         <result property="deployStartTime" column="deploy_start_time" jdbcType="BIGINT" />
+        <result property="deployPerson" column="deploy_person" jdbcType="BIGINT" />
         <result property="deadline" column="deadline" jdbcType="BIGINT" />
         <result property="createdBy" column="created_by" jdbcType="BIGINT" />
         <result property="createdDate" column="created_date" jdbcType="BIGINT" />
@@ -31,8 +34,11 @@
             `current_state_id`,
             `current_state_name`,
             `dev_start_time`,
+            `dev_person`,
             `test_start_time`,
+            `test_person`,
             `deploy_start_time`,
+            `deploy_person`,
             `deadline`,
             `created_by`,
             `created_date`,
@@ -53,8 +59,11 @@
             #{currentStateId},
             #{currentStateName},
             #{devStartTime},
+            #{devPerson},
             #{testStartTime},
+            #{testPerson},
             #{deployStartTime},
+            #{deployPerson},
             #{deadline},
             #{createdBy},
             #{createdDate},
@@ -81,8 +90,11 @@
             #{data.currentStateId},
             #{data.currentStateName},
             #{data.devStartTime},
+            #{data.devPerson},
             #{data.testStartTime},
+            #{data.testPerson},
             #{data.deployStartTime},
+            #{data.deployPerson},
             #{data.deadline},
             #{data.createdBy},
             #{data.createdDate},
@@ -106,9 +118,12 @@
                 `current_state_id`=#{currentStateId}, 
                 `current_state_name`=#{currentStateName}, 
                 `dev_start_time`=#{devStartTime}, 
-                `test_start_time`=#{testStartTime}, 
-                `deploy_start_time`=#{deployStartTime}, 
-                `deadline`=#{deadline}, 
+                `dev_person`=#{devPerson},
+                `test_start_time`=#{testStartTime},
+                `test_person`=#{testPerson},
+                `deploy_start_time`=#{deployStartTime},
+                `deploy_person`=#{deployPerson},
+                `deadline`=#{deadline},
                 `ip`=#{ip}, 
                 `modified_by`=#{modifiedBy},
                 `modified_date`=#{modifiedDate}
@@ -181,11 +196,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -232,11 +256,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -283,11 +316,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -333,11 +375,20 @@
             <if test="devStartTime != null">
                 AND func.`dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND func.`test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND func.`deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND func.`deadline` = #{deadline}
@@ -381,11 +432,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -431,11 +491,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -472,8 +541,11 @@
         func.`current_state_id`,
         func.`current_state_name`,
         func.`dev_start_time`,
+        func.`dev_person`,
         func.`test_start_time`,
+        func.`test_person`,
         func.`deploy_start_time`,
+        func.`deploy_person`,
         func.`deadline`,
         func.`created_by`,
         func.`created_date`,
@@ -510,11 +582,20 @@
             <if test="devStartTime != null">
                 AND func.`dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND func.`dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND func.`test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND func.`test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND func.`deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND func.`deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND func.`deadline` = #{deadline}
@@ -579,11 +660,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -642,11 +732,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -695,11 +794,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
@@ -746,11 +854,20 @@
             <if test="devStartTime != null">
                 AND `dev_start_time` = #{devStartTime}
             </if>
+            <if test="devPerson != null">
+                AND `dev_person` = #{devPerson}
+            </if>
             <if test="testStartTime != null">
                 AND `test_start_time` = #{testStartTime}
             </if>
+            <if test="testPerson != null">
+                AND `test_person` = #{testPerson}
+            </if>
             <if test="deployStartTime != null">
                 AND `deploy_start_time` = #{deployStartTime}
+            </if>
+            <if test="deployPerson != null">
+                AND `deploy_person` = #{deployPerson}
             </if>
             <if test="deadline != null">
                 AND `deadline` = #{deadline}
