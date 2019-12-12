@@ -1,0 +1,15 @@
+# 3333
+spring:
+  application:
+    name: work-team
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.76.134:8848
+        namespace: 7c38b5f2-7ae5-4915-a661-6ba4dccb7c27
+        file-extension: yaml
+        ext-config:
+          - data-id: redis.yaml
+            refresh: true
+          - data-id: actuator.yaml
+            refresh: true
