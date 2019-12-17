@@ -1,14 +1,12 @@
 package com.byx.work.team.controller;
 
-import com.byx.framework.core.utils.StringUtil;
-import com.byx.work.team.config.JwtAuthConfig;
-import com.byx.work.team.model.entity.BaseEntity;
 import com.byx.framework.core.context.AppContext;
 import com.byx.framework.core.domain.PagingContext;
 import com.byx.framework.core.domain.SortingContext;
+import com.byx.framework.core.utils.StringUtil;
+import com.byx.work.team.model.entity.BaseEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -128,7 +126,7 @@ public class BaseController<T extends BaseEntity> {
         return map;
     }
 
-    private String getIp(HttpServletRequest request) {
+    protected String getIp(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
