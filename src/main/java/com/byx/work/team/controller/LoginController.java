@@ -48,6 +48,10 @@ public class LoginController {
             if (!Md5Util.md5(loginDTO.getPassword() + oneUsers.getSalt()).equals(oneUsers.getPassword())) {
                 return RO.error("用户名密码不匹配");
             }
+
+            if (!"active".equals(oneUsers.getState())) {
+                return RO.error("用户状态异常");
+            }
         }
 
         Instant now = Instant.now();

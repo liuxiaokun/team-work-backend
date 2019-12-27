@@ -51,7 +51,7 @@ public class RegisterController extends BaseController<User> {
             User user = BeanUtil.copyProperties(userRegisterDTO, sourceUsers);
             user.setId(AppContext.IdGen.nextId());
             user.setSalt(SaltUtil.genSalt(6));
-            user.setState("active");
+            user.setState("inactive");
             user.setPassword(Md5Util.md5(userRegisterDTO.getPassword() + user.getSalt()));
             user.setStatus(1);
             user.setCreatedBy(0L);
